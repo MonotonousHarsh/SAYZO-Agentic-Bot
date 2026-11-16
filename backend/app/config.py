@@ -16,10 +16,14 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
+    # LLM (Groq)
     groq_api_key: SecretStr | None = None
     groq_model: str = "openai/gpt-oss-120b"
     groq_base_url: str = "https://api.groq.com/openai/v1"
     groq_timeout_seconds: float = Field(default=60.0, gt=0)
+
+    # Database (Supabase Postgres, session pooler URI)
+    database_url: SecretStr | None = None
 
 
 @lru_cache
