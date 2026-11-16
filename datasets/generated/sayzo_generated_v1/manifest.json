@@ -1,0 +1,40 @@
+{
+  "name": "sayzo_generated_v1",
+  "version": "1.0.0",
+  "description": "Hand-written seed dataset for the SAYZO prototype: two fictional companies, three source systems and deliberate edge cases, with ground-truth evaluation questions. All people, companies and content are fictional. Augmented with LLM-written topics (model openai/gpt-oss-120b, prompt topic-v1, seed 42).",
+  "time_window": {
+    "start": "2026-11-01T00:00:00+05:30",
+    "end": "2026-11-30T23:59:00+05:30"
+  },
+  "edge_cases": {
+    "edits": [
+      "nex_doc_launch_plan",
+      "nex_msg_002"
+    ],
+    "deletions": [
+      "nex_msg_004"
+    ],
+    "duplicates": [
+      [
+        "nex_msg_001"
+      ],
+      [
+        "nex_mtg_001",
+        "nex_mtg_002"
+      ]
+    ],
+    "conflicts": [
+      [
+        "nex_doc_launch_plan",
+        "nex_msg_006"
+      ]
+    ],
+    "restricted": [
+      "nex_doc_hiring_plan",
+      "nex_msg_007"
+    ],
+    "prompt_injections": [
+      "nex_doc_vendor_notes"
+    ]
+  }
+}

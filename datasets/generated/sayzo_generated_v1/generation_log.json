@@ -1,0 +1,466 @@
+{
+  "dataset_name": "sayzo_generated_v1",
+  "base_dataset": "sayzo_seed_v1",
+  "model": "openai/gpt-oss-120b",
+  "prompt_version": "topic-v1",
+  "spec": {
+    "dataset_name": "sayzo_generated_v1",
+    "topics_per_project": 2,
+    "messages_per_topic": 4,
+    "utterances_per_meeting": 6,
+    "seed": 42,
+    "temperature": 0.8,
+    "max_text_length": 1500,
+    "forbidden_subjects": [
+      "launch",
+      "go live",
+      "go-live",
+      "pilot",
+      "salary",
+      "hiring",
+      "budget",
+      "owner",
+      "owns",
+      "ownership",
+      "migration",
+      "database",
+      "postgres",
+      "redis",
+      "session",
+      "cloudkite"
+    ]
+  },
+  "generated_at": "2026-11-16T16:49:24.562232+00:00",
+  "topics": [
+    {
+      "organisation_id": "org_nexora",
+      "project_id": "nex_proj_atlas",
+      "topic": "Login bug triage",
+      "response": {
+        "topic": "Login bug triage",
+        "messages": [
+          {
+            "author_id": "nex_rohan",
+            "text": "I’ve reproduced the intermittent login error on the staging API."
+          },
+          {
+            "author_id": "nex_priya",
+            "text": "The CI pipeline flagged the failing test in auth-service."
+          },
+          {
+            "author_id": "nex_meera",
+            "text": "Let’s prioritize fixing the null pointer in the token validator."
+          },
+          {
+            "author_id": "nex_arjun",
+            "text": "Can we add a quick regression test before the next sprint?"
+          }
+        ],
+        "page": {
+          "author_id": "nex_meera",
+          "title": "Bug triage summary for login authentication issue",
+          "content": "During today’s triage we identified that the login failure stems from a null pointer in the token validator when certain user attributes are absent. The issue reproduces consistently on the staging environment and is reflected in the CI pipeline’s failing auth-service test. Rohan will lead the code fix, and Priya will add a dedicated regression test to the pipeline. I will update the product backlog to reflect the priority and communicate the expected resolution timeline to stakeholders. The team agreed to verify the fix on both staging and the integration environment before merging to main."
+        },
+        "meeting": {
+          "title": "Login bug triage meeting",
+          "utterances": [
+            {
+              "speaker_id": "nex_meera",
+              "text": "Thanks everyone, let’s review the login bug findings."
+            },
+            {
+              "speaker_id": "nex_rohan",
+              "text": "The error occurs when the user profile is missing certain fields."
+            },
+            {
+              "speaker_id": "nex_priya",
+              "text": "Our monitoring shows spikes in the failure rate during peak hours."
+            },
+            {
+              "speaker_id": "nex_meera",
+              "text": "We’ll assign the fix to Rohan and add a test case."
+            },
+            {
+              "speaker_id": "nex_arjun",
+              "text": "I’ll update the product backlog and note the impact on user experience."
+            },
+            {
+              "speaker_id": "nex_priya",
+              "text": "I’ll ensure the deployment pipeline includes the new test."
+            }
+          ]
+        }
+      },
+      "kept_ids": [
+        "gen_msg_0001",
+        "gen_msg_0002",
+        "gen_msg_0003",
+        "gen_msg_0004",
+        "gen_doc_0001",
+        "gen_mtg_0001"
+      ],
+      "dropped": []
+    },
+    {
+      "organisation_id": "org_nexora",
+      "project_id": "nex_proj_atlas",
+      "topic": "Feature flag rollout planning",
+      "response": {
+        "topic": "Feature flag rollout planning",
+        "messages": [
+          {
+            "author_id": "nex_arjun",
+            "text": "Need to finalize flag naming conventions for the new UI toggle."
+          },
+          {
+            "author_id": "nex_rohan",
+            "text": "I'll update the config repo with the new flag definitions by EOD."
+          },
+          {
+            "author_id": "nex_priya",
+            "text": "Make sure the CI pipeline validates flag schema before merge."
+          },
+          {
+            "author_id": "nex_meera",
+            "text": "Let's schedule a quick sync to review rollout steps."
+          }
+        ],
+        "page": {
+          "author_id": "nex_meera",
+          "title": "Feature Flag Rollout Planning",
+          "content": "The team outlined the approach for introducing the new feature flag that controls the experimental UI component. The flag will follow the agreed naming pattern and be stored in the shared config repository. Backend changes will reference the flag through the feature toggle library, and the DevOps pipeline will enforce schema validation during CI. Documentation will be added to the internal wiki, describing the flag purpose, default state, and rollout criteria. A phased rollout will start with internal testers, followed by a broader audience after monitoring. All stakeholders are expected to review the plan before the next sprint."
+        },
+        "meeting": {
+          "title": "Feature Flag Rollout Sync",
+          "utterances": [
+            {
+              "speaker_id": "nex_meera",
+              "text": "Welcome, let's go over the flag rollout checklist."
+            },
+            {
+              "speaker_id": "nex_arjun",
+              "text": "The naming convention is set; we need to update the product spec."
+            },
+            {
+              "speaker_id": "nex_rohan",
+              "text": "I've added the flag definitions to the repo and opened a PR."
+            },
+            {
+              "speaker_id": "nex_priya",
+              "text": "CI will now reject any flag schema mismatches automatically."
+            },
+            {
+              "speaker_id": "nex_meera",
+              "text": "We should schedule the first internal test window for Thursday."
+            },
+            {
+              "speaker_id": "nex_arjun",
+              "text": "I'll coordinate with QA to verify flag behavior before the test."
+            }
+          ]
+        }
+      },
+      "kept_ids": [
+        "gen_msg_0005",
+        "gen_msg_0006",
+        "gen_msg_0007",
+        "gen_msg_0008",
+        "gen_doc_0002",
+        "gen_mtg_0002"
+      ],
+      "dropped": []
+    },
+    {
+      "organisation_id": "org_nexora",
+      "project_id": "nex_proj_beacon",
+      "topic": "Login error bug triage",
+      "response": {
+        "topic": "Login error bug triage",
+        "messages": [
+          {
+            "author_id": "nex_meera",
+            "text": "I've noticed a spike in login error tickets; let's prioritize them."
+          },
+          {
+            "author_id": "nex_rohan",
+            "text": "I'll pull the recent logs and tag the failing cases."
+          },
+          {
+            "author_id": "nex_priya",
+            "text": "I'll set up a temporary monitoring alert for the affected endpoint."
+          },
+          {
+            "author_id": "nex_arjun",
+            "text": "Can we add a quick FAQ entry for users seeing the error?"
+          }
+        ],
+        "page": {
+          "author_id": "nex_meera",
+          "title": "Bug Triage Process for Login Errors",
+          "content": "The team identified an uptick in login failure reports across the platform. To address this, we established a short triage loop: Rohan will extract recent logs and label each incident, Priya will configure a real‑time alert on the authentication endpoint, and Arjun will draft a brief FAQ covering the symptom and a temporary workaround. Meera will review the findings and coordinate with support to ensure users receive timely guidance. The goal is to isolate the root cause within two days and reduce the error rate before the next sprint planning session."
+        },
+        "meeting": {
+          "title": "Login Error Bug Triage",
+          "utterances": [
+            {
+              "speaker_id": "nex_meera",
+              "text": "Thanks everyone for joining; the login errors have increased over the past two days."
+            },
+            {
+              "speaker_id": "nex_rohan",
+              "text": "The stack traces point to a timeout in the auth service."
+            },
+            {
+              "speaker_id": "nex_priya",
+              "text": "I've added a health check and will monitor the response time."
+            },
+            {
+              "speaker_id": "nex_arjun",
+              "text": "We should update the support docs with a workaround."
+            },
+            {
+              "speaker_id": "nex_rohan",
+              "text": "I'll create a ticket to investigate the timeout root cause."
+            },
+            {
+              "speaker_id": "nex_meera",
+              "text": "Let's reconvene tomorrow with findings."
+            }
+          ]
+        }
+      },
+      "kept_ids": [
+        "gen_msg_0009",
+        "gen_msg_0010",
+        "gen_msg_0011",
+        "gen_msg_0012",
+        "gen_mtg_0003"
+      ],
+      "dropped": [
+        {
+          "kind": "page",
+          "reason": "mentions forbidden subject 'session'",
+          "text": "Bug Triage Process for Login Errors\nThe team identified an uptick in login failure reports across the platform. To address this, we established a short triage loop: Rohan will extract recent logs and label each incident, Priya will configure a real‑time alert on the authentication endpoint, and Arjun will draft a brief FAQ covering the symptom and a temporary workaround. Meera will review the findings and coordinate with support to ensure users receive timely guidance. The goal is to isolate the root cause within two days and reduce the error rate before the next sprint planning session."
+        }
+      ]
+    },
+    {
+      "organisation_id": "org_nexora",
+      "project_id": "nex_proj_beacon",
+      "topic": "Feature Flag Rollout for Search UI",
+      "response": {
+        "topic": "Feature Flag Rollout for Search UI",
+        "messages": [
+          {
+            "author_id": "nex_meera",
+            "text": "We need to finalize the flag config before the next sprint."
+          },
+          {
+            "author_id": "nex_rohan",
+            "text": "I'll update the API endpoint to check the new flag."
+          },
+          {
+            "author_id": "nex_priya",
+            "text": "I'll add monitoring for the flag toggle in our CI pipeline."
+          },
+          {
+            "author_id": "nex_arjun",
+            "text": "User testing will focus on the search UI with the flag enabled."
+          }
+        ],
+        "page": {
+          "author_id": "nex_meera",
+          "title": "Feature Flag Rollout Plan for Search UI",
+          "content": "The team agreed to introduce a feature flag to control the new search UI rollout. The flag will be stored in the central config repository and default to off in production. Backend services will read the flag on each request, and unit tests will cover both enabled and disabled paths. Priya will add a monitoring job that tracks flag toggles and alerts on any failures. Rohan will ensure the API layer respects the flag and update documentation accordingly. A short user testing session is planned to validate the UI when the flag is on, after which we can consider broader exposure."
+        },
+        "meeting": {
+          "title": "Feature Flag Rollout Sync",
+          "utterances": [
+            {
+              "speaker_id": "nex_meera",
+              "text": "Let's review the status of the search UI flag."
+            },
+            {
+              "speaker_id": "nex_arjun",
+              "text": "Design is ready, and the flag is in the config repo."
+            },
+            {
+              "speaker_id": "nex_rohan",
+              "text": "Backend endpoint now reads the flag, but we need unit tests."
+            },
+            {
+              "speaker_id": "nex_priya",
+              "text": "I've set up a monitoring job to alert on toggle failures."
+            },
+            {
+              "speaker_id": "nex_meera",
+              "text": "Make sure the flag defaults to off for production until verified."
+            },
+            {
+              "speaker_id": "nex_arjun",
+              "text": "We'll schedule a user test session next Tuesday."
+            }
+          ]
+        }
+      },
+      "kept_ids": [
+        "gen_msg_0013",
+        "gen_msg_0014",
+        "gen_msg_0015",
+        "gen_msg_0016",
+        "gen_mtg_0004"
+      ],
+      "dropped": [
+        {
+          "kind": "page",
+          "reason": "mentions forbidden subject 'session'",
+          "text": "Feature Flag Rollout Plan for Search UI\nThe team agreed to introduce a feature flag to control the new search UI rollout. The flag will be stored in the central config repository and default to off in production. Backend services will read the flag on each request, and unit tests will cover both enabled and disabled paths. Priya will add a monitoring job that tracks flag toggles and alerts on any failures. Rohan will ensure the API layer respects the flag and update documentation accordingly. A short user testing session is planned to validate the UI when the flag is on, after which we can consider broader exposure."
+        },
+        {
+          "kind": "utterance",
+          "reason": "mentions forbidden subject 'session'",
+          "text": "We'll schedule a user test session next Tuesday."
+        }
+      ]
+    },
+    {
+      "organisation_id": "org_vertex",
+      "project_id": "vtx_proj_atlas",
+      "topic": "Inventory sync bug triage",
+      "response": {
+        "topic": "Inventory sync bug triage",
+        "messages": [
+          {
+            "author_id": "vtx_sana",
+            "text": "I saw three tickets on the sync lag, can we prioritize them today?"
+          },
+          {
+            "author_id": "vtx_vikram",
+            "text": "Sure, I’ll assign them to the devs and add test cases."
+          },
+          {
+            "author_id": "vtx_sana",
+            "text": "Please add a note about the edge‑case where SKU count exceeds 10k."
+          },
+          {
+            "author_id": "vtx_vikram",
+            "text": "Will do. I’ll also update the runbook with the new steps."
+          }
+        ],
+        "page": {
+          "author_id": "vtx_sana",
+          "title": "Bug triage process for inventory synchronization",
+          "content": "The inventory sync component has been generating intermittent lag reports. During the daily triage we reviewed the latest tickets and identified three high‑priority bugs: duplicate SKU entries, delayed stock updates, and a crash when processing large batches. Each bug was assigned to a developer with an initial fix estimate. We added regression tests covering the identified edge cases and updated the runbook to include verification steps for batch sizes over 10k items. The team agreed to monitor the error logs for the next 48 hours and reconvene if any new patterns emerge. This approach keeps the sync reliable while we continue broader improvements."
+        },
+        "meeting": {
+          "title": "Sync bug triage stand‑up",
+          "utterances": [
+            {
+              "speaker_id": "vtx_sana",
+              "text": "Let’s review the three inventory sync tickets."
+            },
+            {
+              "speaker_id": "vtx_vikram",
+              "text": "Ticket A is a duplicate SKU, I’ve assigned it to Priya."
+            },
+            {
+              "speaker_id": "vtx_sana",
+              "text": "Ticket B causes delayed updates; we need a test for batch sizes."
+            },
+            {
+              "speaker_id": "vtx_vikram",
+              "text": "I’ll add that test and tag it for review."
+            },
+            {
+              "speaker_id": "vtx_sana",
+              "text": "Ticket C crashes on large batches; include it in the runbook."
+            },
+            {
+              "speaker_id": "vtx_vikram",
+              "text": "Done. I’ll push the changes by end of day."
+            }
+          ]
+        }
+      },
+      "kept_ids": [
+        "gen_msg_0017",
+        "gen_msg_0018",
+        "gen_msg_0019",
+        "gen_msg_0020",
+        "gen_doc_0003",
+        "gen_mtg_0005"
+      ],
+      "dropped": []
+    },
+    {
+      "organisation_id": "org_vertex",
+      "project_id": "vtx_proj_atlas",
+      "topic": "POS Device Configuration Testing",
+      "response": {
+        "topic": "POS Device Configuration Testing",
+        "messages": [
+          {
+            "author_id": "vtx_sana",
+            "text": "Can we get an update on the POS device config test results from the new store?"
+          },
+          {
+            "author_id": "vtx_vikram",
+            "text": "The latest batch passed basic connectivity, but we saw mismatched tax codes in two terminals."
+          },
+          {
+            "author_id": "vtx_sana",
+            "text": "Please add those tax code mappings to the config script and run regression."
+          },
+          {
+            "author_id": "vtx_vikram",
+            "text": "Will push the updated script to the test lab by EOD."
+          }
+        ],
+        "page": {
+          "author_id": "vtx_sana",
+          "title": "POS Device Configuration Testing Summary",
+          "content": "During this week we ran the standard configuration validation on the new point‑of‑sale devices installed in Store 12. All devices successfully completed network and peripheral checks. However, two terminals reported tax code mismatches when processing sample transactions. The issue traces back to an outdated tax mapping file that was not refreshed after the recent regional rate update. The team has corrected the file and scheduled a full regression run. Expected completion is tomorrow morning, after which we will close the testing cycle and move the devices to production readiness."
+        },
+        "meeting": {
+          "title": "POS Config Review Meeting",
+          "utterances": [
+            {
+              "speaker_id": "vtx_sana",
+              "text": "Let's start with the latest test outcomes."
+            },
+            {
+              "speaker_id": "vtx_vikram",
+              "text": "All devices connected, but tax code mismatch on two units."
+            },
+            {
+              "speaker_id": "vtx_sana",
+              "text": "Did the mismatch stem from the recent config change?"
+            },
+            {
+              "speaker_id": "vtx_vikram",
+              "text": "Yes, the new tax mapping file omitted those codes."
+            },
+            {
+              "speaker_id": "vtx_sana",
+              "text": "Update the file and rerun the full suite."
+            },
+            {
+              "speaker_id": "vtx_vikram",
+              "text": "Will have the revised run ready for tomorrow's QA."
+            }
+          ]
+        }
+      },
+      "kept_ids": [
+        "gen_msg_0021",
+        "gen_msg_0022",
+        "gen_msg_0023",
+        "gen_msg_0024",
+        "gen_doc_0004",
+        "gen_mtg_0006"
+      ],
+      "dropped": []
+    }
+  ],
+  "failures": []
+}

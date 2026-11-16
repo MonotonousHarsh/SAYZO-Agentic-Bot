@@ -1,0 +1,431 @@
+{
+  "meetings": [
+    {
+      "id": "nex_mtg_001",
+      "organisation_id": "org_nexora",
+      "title": "Atlas weekly sync",
+      "project_id": "nex_proj_atlas",
+      "access_group_ids": [
+        "nex_g_engineering",
+        "nex_g_product"
+      ],
+      "started_at": "2026-11-10T16:00:00+05:30",
+      "participants": [
+        "nex_meera",
+        "nex_rohan",
+        "nex_priya",
+        "nex_arjun"
+      ],
+      "utterances": [
+        {
+          "speaker": "nex_arjun",
+          "offset_seconds": 0,
+          "text": "First item is the launch date. We are still planning for Friday the 20th."
+        },
+        {
+          "speaker": "nex_rohan",
+          "offset_seconds": 25,
+          "text": "The v2 API migration is behind. The billing endpoints need a schema change, so I need until the 19th to finish it."
+        },
+        {
+          "speaker": "nex_priya",
+          "offset_seconds": 70,
+          "text": "If the migration lands on the 19th, I can't run the staging load test before the 20th."
+        },
+        {
+          "speaker": "nex_meera",
+          "offset_seconds": 110,
+          "text": "Then Friday is too tight. Let's move the launch to Monday the 23rd. Is everyone agreed?"
+        },
+        {
+          "speaker": "nex_arjun",
+          "offset_seconds": 130,
+          "text": "Agreed. I'll update the launch announcement and inform the pilot customers by 12 November."
+        },
+        {
+          "speaker": "nex_rohan",
+          "offset_seconds": 145,
+          "text": "I'll complete the API migration by 19 November."
+        },
+        {
+          "speaker": "nex_priya",
+          "offset_seconds": 160,
+          "text": "And I'll run the staging load test by 20 November."
+        },
+        {
+          "speaker": "nex_meera",
+          "offset_seconds": 175,
+          "text": "Good. Decision: the Atlas launch moves to Monday 23 November."
+        }
+      ]
+    },
+    {
+      "id": "nex_mtg_002",
+      "organisation_id": "org_nexora",
+      "title": "Atlas weekly sync",
+      "project_id": "nex_proj_atlas",
+      "access_group_ids": [
+        "nex_g_engineering",
+        "nex_g_product"
+      ],
+      "started_at": "2026-11-10T16:00:00+05:30",
+      "participants": [
+        "nex_meera",
+        "nex_rohan",
+        "nex_priya",
+        "nex_arjun"
+      ],
+      "utterances": [
+        {
+          "speaker": "nex_arjun",
+          "offset_seconds": 0,
+          "text": "First item is the launch date. We are still planning for Friday the 20th."
+        },
+        {
+          "speaker": "nex_rohan",
+          "offset_seconds": 25,
+          "text": "The v2 API migration is behind. The billing endpoints need a schema change, so I need until the 19th to finish it."
+        },
+        {
+          "speaker": "nex_priya",
+          "offset_seconds": 70,
+          "text": "If the migration lands on the 19th, I can't run the staging load test before the 20th."
+        },
+        {
+          "speaker": "nex_meera",
+          "offset_seconds": 110,
+          "text": "Then Friday is too tight. Let's move the launch to Monday the 23rd. Is everyone agreed?"
+        },
+        {
+          "speaker": "nex_arjun",
+          "offset_seconds": 130,
+          "text": "Agreed. I'll update the launch announcement and inform the pilot customers by 12 November."
+        },
+        {
+          "speaker": "nex_rohan",
+          "offset_seconds": 145,
+          "text": "I'll complete the API migration by 19 November."
+        },
+        {
+          "speaker": "nex_priya",
+          "offset_seconds": 160,
+          "text": "And I'll run the staging load test by 20 November."
+        },
+        {
+          "speaker": "nex_meera",
+          "offset_seconds": 175,
+          "text": "Good. Decision: the Atlas launch moves to Monday 23 November."
+        }
+      ]
+    },
+    {
+      "id": "vtx_mtg_001",
+      "organisation_id": "org_vertex",
+      "title": "Store ops sync",
+      "project_id": "vtx_proj_atlas",
+      "access_group_ids": [
+        "vtx_g_ops"
+      ],
+      "started_at": "2026-11-10T14:00:00+05:30",
+      "participants": [
+        "vtx_sana",
+        "vtx_vikram"
+      ],
+      "utterances": [
+        {
+          "speaker": "vtx_sana",
+          "offset_seconds": 0,
+          "text": "Where are we on the POS vendor for Atlas?"
+        },
+        {
+          "speaker": "vtx_vikram",
+          "offset_seconds": 20,
+          "text": "Two vendors left. I'll finalise the POS vendor contract by 25 November."
+        }
+      ]
+    },
+    {
+      "id": "gen_mtg_0001",
+      "organisation_id": "org_nexora",
+      "title": "Login bug triage meeting",
+      "project_id": "nex_proj_atlas",
+      "access_group_ids": [
+        "nex_g_engineering",
+        "nex_g_product"
+      ],
+      "started_at": "2026-11-19T21:41:02+05:30",
+      "participants": [
+        "nex_meera",
+        "nex_rohan",
+        "nex_priya",
+        "nex_arjun"
+      ],
+      "utterances": [
+        {
+          "speaker": "nex_meera",
+          "offset_seconds": 0,
+          "text": "Thanks everyone, let’s review the login bug findings."
+        },
+        {
+          "speaker": "nex_rohan",
+          "offset_seconds": 15,
+          "text": "The error occurs when the user profile is missing certain fields."
+        },
+        {
+          "speaker": "nex_priya",
+          "offset_seconds": 62,
+          "text": "Our monitoring shows spikes in the failure rate during peak hours."
+        },
+        {
+          "speaker": "nex_meera",
+          "offset_seconds": 99,
+          "text": "We’ll assign the fix to Rohan and add a test case."
+        },
+        {
+          "speaker": "nex_arjun",
+          "offset_seconds": 111,
+          "text": "I’ll update the product backlog and note the impact on user experience."
+        },
+        {
+          "speaker": "nex_priya",
+          "offset_seconds": 122,
+          "text": "I’ll ensure the deployment pipeline includes the new test."
+        }
+      ]
+    },
+    {
+      "id": "gen_mtg_0002",
+      "organisation_id": "org_nexora",
+      "title": "Feature Flag Rollout Sync",
+      "project_id": "nex_proj_atlas",
+      "access_group_ids": [
+        "nex_g_engineering",
+        "nex_g_product"
+      ],
+      "started_at": "2026-11-08T02:55:15+05:30",
+      "participants": [
+        "nex_meera",
+        "nex_arjun",
+        "nex_rohan",
+        "nex_priya"
+      ],
+      "utterances": [
+        {
+          "speaker": "nex_meera",
+          "offset_seconds": 0,
+          "text": "Welcome, let's go over the flag rollout checklist."
+        },
+        {
+          "speaker": "nex_arjun",
+          "offset_seconds": 36,
+          "text": "The naming convention is set; we need to update the product spec."
+        },
+        {
+          "speaker": "nex_rohan",
+          "offset_seconds": 60,
+          "text": "I've added the flag definitions to the repo and opened a PR."
+        },
+        {
+          "speaker": "nex_priya",
+          "offset_seconds": 98,
+          "text": "CI will now reject any flag schema mismatches automatically."
+        },
+        {
+          "speaker": "nex_meera",
+          "offset_seconds": 145,
+          "text": "We should schedule the first internal test window for Thursday."
+        },
+        {
+          "speaker": "nex_arjun",
+          "offset_seconds": 172,
+          "text": "I'll coordinate with QA to verify flag behavior before the test."
+        }
+      ]
+    },
+    {
+      "id": "gen_mtg_0003",
+      "organisation_id": "org_nexora",
+      "title": "Login Error Bug Triage",
+      "project_id": "nex_proj_beacon",
+      "access_group_ids": [
+        "nex_g_engineering",
+        "nex_g_product"
+      ],
+      "started_at": "2026-11-23T05:54:21+05:30",
+      "participants": [
+        "nex_meera",
+        "nex_rohan",
+        "nex_priya",
+        "nex_arjun"
+      ],
+      "utterances": [
+        {
+          "speaker": "nex_meera",
+          "offset_seconds": 0,
+          "text": "Thanks everyone for joining; the login errors have increased over the past two days."
+        },
+        {
+          "speaker": "nex_rohan",
+          "offset_seconds": 31,
+          "text": "The stack traces point to a timeout in the auth service."
+        },
+        {
+          "speaker": "nex_priya",
+          "offset_seconds": 47,
+          "text": "I've added a health check and will monitor the response time."
+        },
+        {
+          "speaker": "nex_arjun",
+          "offset_seconds": 62,
+          "text": "We should update the support docs with a workaround."
+        },
+        {
+          "speaker": "nex_rohan",
+          "offset_seconds": 96,
+          "text": "I'll create a ticket to investigate the timeout root cause."
+        },
+        {
+          "speaker": "nex_meera",
+          "offset_seconds": 112,
+          "text": "Let's reconvene tomorrow with findings."
+        }
+      ]
+    },
+    {
+      "id": "gen_mtg_0004",
+      "organisation_id": "org_nexora",
+      "title": "Feature Flag Rollout Sync",
+      "project_id": "nex_proj_beacon",
+      "access_group_ids": [
+        "nex_g_engineering",
+        "nex_g_product"
+      ],
+      "started_at": "2026-11-25T17:30:07+05:30",
+      "participants": [
+        "nex_meera",
+        "nex_arjun",
+        "nex_rohan",
+        "nex_priya"
+      ],
+      "utterances": [
+        {
+          "speaker": "nex_meera",
+          "offset_seconds": 0,
+          "text": "Let's review the status of the search UI flag."
+        },
+        {
+          "speaker": "nex_arjun",
+          "offset_seconds": 34,
+          "text": "Design is ready, and the flag is in the config repo."
+        },
+        {
+          "speaker": "nex_rohan",
+          "offset_seconds": 49,
+          "text": "Backend endpoint now reads the flag, but we need unit tests."
+        },
+        {
+          "speaker": "nex_priya",
+          "offset_seconds": 94,
+          "text": "I've set up a monitoring job to alert on toggle failures."
+        },
+        {
+          "speaker": "nex_meera",
+          "offset_seconds": 122,
+          "text": "Make sure the flag defaults to off for production until verified."
+        }
+      ]
+    },
+    {
+      "id": "gen_mtg_0005",
+      "organisation_id": "org_vertex",
+      "title": "Sync bug triage stand‐up",
+      "project_id": "vtx_proj_atlas",
+      "access_group_ids": [
+        "vtx_g_ops"
+      ],
+      "started_at": "2026-11-19T07:38:05+05:30",
+      "participants": [
+        "vtx_sana",
+        "vtx_vikram"
+      ],
+      "utterances": [
+        {
+          "speaker": "vtx_sana",
+          "offset_seconds": 0,
+          "text": "Let’s review the three inventory sync tickets."
+        },
+        {
+          "speaker": "vtx_vikram",
+          "offset_seconds": 15,
+          "text": "Ticket A is a duplicate SKU, I’ve assigned it to Priya."
+        },
+        {
+          "speaker": "vtx_sana",
+          "offset_seconds": 39,
+          "text": "Ticket B causes delayed updates; we need a test for batch sizes."
+        },
+        {
+          "speaker": "vtx_vikram",
+          "offset_seconds": 55,
+          "text": "I’ll add that test and tag it for review."
+        },
+        {
+          "speaker": "vtx_sana",
+          "offset_seconds": 89,
+          "text": "Ticket C crashes on large batches; include it in the runbook."
+        },
+        {
+          "speaker": "vtx_vikram",
+          "offset_seconds": 116,
+          "text": "Done. I’ll push the changes by end of day."
+        }
+      ]
+    },
+    {
+      "id": "gen_mtg_0006",
+      "organisation_id": "org_vertex",
+      "title": "POS Config Review Meeting",
+      "project_id": "vtx_proj_atlas",
+      "access_group_ids": [
+        "vtx_g_ops"
+      ],
+      "started_at": "2026-11-19T19:10:09+05:30",
+      "participants": [
+        "vtx_sana",
+        "vtx_vikram"
+      ],
+      "utterances": [
+        {
+          "speaker": "vtx_sana",
+          "offset_seconds": 0,
+          "text": "Let's start with the latest test outcomes."
+        },
+        {
+          "speaker": "vtx_vikram",
+          "offset_seconds": 48,
+          "text": "All devices connected, but tax code mismatch on two units."
+        },
+        {
+          "speaker": "vtx_sana",
+          "offset_seconds": 98,
+          "text": "Did the mismatch stem from the recent config change?"
+        },
+        {
+          "speaker": "vtx_vikram",
+          "offset_seconds": 118,
+          "text": "Yes, the new tax mapping file omitted those codes."
+        },
+        {
+          "speaker": "vtx_sana",
+          "offset_seconds": 162,
+          "text": "Update the file and rerun the full suite."
+        },
+        {
+          "speaker": "vtx_vikram",
+          "offset_seconds": 218,
+          "text": "Will have the revised run ready for tomorrow's QA."
+        }
+      ]
+    }
+  ]
+}

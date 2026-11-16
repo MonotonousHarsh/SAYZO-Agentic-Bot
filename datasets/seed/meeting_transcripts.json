@@ -1,0 +1,148 @@
+{
+  "meetings": [
+    {
+      "id": "nex_mtg_001",
+      "organisation_id": "org_nexora",
+      "title": "Atlas weekly sync",
+      "project_id": "nex_proj_atlas",
+      "access_group_ids": [
+        "nex_g_engineering",
+        "nex_g_product"
+      ],
+      "started_at": "2026-11-10T16:00:00+05:30",
+      "participants": [
+        "nex_meera",
+        "nex_rohan",
+        "nex_priya",
+        "nex_arjun"
+      ],
+      "utterances": [
+        {
+          "speaker": "nex_arjun",
+          "offset_seconds": 0,
+          "text": "First item is the launch date. We are still planning for Friday the 20th."
+        },
+        {
+          "speaker": "nex_rohan",
+          "offset_seconds": 25,
+          "text": "The v2 API migration is behind. The billing endpoints need a schema change, so I need until the 19th to finish it."
+        },
+        {
+          "speaker": "nex_priya",
+          "offset_seconds": 70,
+          "text": "If the migration lands on the 19th, I can't run the staging load test before the 20th."
+        },
+        {
+          "speaker": "nex_meera",
+          "offset_seconds": 110,
+          "text": "Then Friday is too tight. Let's move the launch to Monday the 23rd. Is everyone agreed?"
+        },
+        {
+          "speaker": "nex_arjun",
+          "offset_seconds": 130,
+          "text": "Agreed. I'll update the launch announcement and inform the pilot customers by 12 November."
+        },
+        {
+          "speaker": "nex_rohan",
+          "offset_seconds": 145,
+          "text": "I'll complete the API migration by 19 November."
+        },
+        {
+          "speaker": "nex_priya",
+          "offset_seconds": 160,
+          "text": "And I'll run the staging load test by 20 November."
+        },
+        {
+          "speaker": "nex_meera",
+          "offset_seconds": 175,
+          "text": "Good. Decision: the Atlas launch moves to Monday 23 November."
+        }
+      ]
+    },
+    {
+      "id": "nex_mtg_002",
+      "organisation_id": "org_nexora",
+      "title": "Atlas weekly sync",
+      "project_id": "nex_proj_atlas",
+      "access_group_ids": [
+        "nex_g_engineering",
+        "nex_g_product"
+      ],
+      "started_at": "2026-11-10T16:00:00+05:30",
+      "participants": [
+        "nex_meera",
+        "nex_rohan",
+        "nex_priya",
+        "nex_arjun"
+      ],
+      "utterances": [
+        {
+          "speaker": "nex_arjun",
+          "offset_seconds": 0,
+          "text": "First item is the launch date. We are still planning for Friday the 20th."
+        },
+        {
+          "speaker": "nex_rohan",
+          "offset_seconds": 25,
+          "text": "The v2 API migration is behind. The billing endpoints need a schema change, so I need until the 19th to finish it."
+        },
+        {
+          "speaker": "nex_priya",
+          "offset_seconds": 70,
+          "text": "If the migration lands on the 19th, I can't run the staging load test before the 20th."
+        },
+        {
+          "speaker": "nex_meera",
+          "offset_seconds": 110,
+          "text": "Then Friday is too tight. Let's move the launch to Monday the 23rd. Is everyone agreed?"
+        },
+        {
+          "speaker": "nex_arjun",
+          "offset_seconds": 130,
+          "text": "Agreed. I'll update the launch announcement and inform the pilot customers by 12 November."
+        },
+        {
+          "speaker": "nex_rohan",
+          "offset_seconds": 145,
+          "text": "I'll complete the API migration by 19 November."
+        },
+        {
+          "speaker": "nex_priya",
+          "offset_seconds": 160,
+          "text": "And I'll run the staging load test by 20 November."
+        },
+        {
+          "speaker": "nex_meera",
+          "offset_seconds": 175,
+          "text": "Good. Decision: the Atlas launch moves to Monday 23 November."
+        }
+      ]
+    },
+    {
+      "id": "vtx_mtg_001",
+      "organisation_id": "org_vertex",
+      "title": "Store ops sync",
+      "project_id": "vtx_proj_atlas",
+      "access_group_ids": [
+        "vtx_g_ops"
+      ],
+      "started_at": "2026-11-10T14:00:00+05:30",
+      "participants": [
+        "vtx_sana",
+        "vtx_vikram"
+      ],
+      "utterances": [
+        {
+          "speaker": "vtx_sana",
+          "offset_seconds": 0,
+          "text": "Where are we on the POS vendor for Atlas?"
+        },
+        {
+          "speaker": "vtx_vikram",
+          "offset_seconds": 20,
+          "text": "Two vendors left. I'll finalise the POS vendor contract by 25 November."
+        }
+      ]
+    }
+  ]
+}

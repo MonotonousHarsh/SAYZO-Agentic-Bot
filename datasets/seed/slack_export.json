@@ -1,0 +1,160 @@
+{
+  "workspaces": [
+    {
+      "organisation_id": "org_nexora",
+      "workspace_name": "nexora-labs",
+      "channels": [
+        {
+          "id": "nex_ch_atlas_dev",
+          "name": "atlas-dev",
+          "access_group_ids": [
+            "nex_g_engineering",
+            "nex_g_product"
+          ],
+          "project_id": "nex_proj_atlas",
+          "events": [
+            {
+              "type": "message",
+              "client_msg_id": "nex_msg_001",
+              "user": "nex_rohan",
+              "ts": "1794204000.000100",
+              "text": "Heads up: the v2 API migration is taking longer than planned. The billing endpoints need a schema change, so realistically I need until 19 Nov to finish it."
+            },
+            {
+              "type": "message",
+              "client_msg_id": "nex_msg_002",
+              "user": "nex_priya",
+              "ts": "1794204720.000100",
+              "text": "Staging load test for Atlas is planned for 18 Nov."
+            },
+            {
+              "type": "message",
+              "client_msg_id": "nex_msg_003",
+              "user": "nex_arjun",
+              "ts": "1794205200.000100",
+              "text": "Thanks both. Let's settle the launch timeline in tomorrow's Atlas weekly sync."
+            },
+            {
+              "type": "message",
+              "client_msg_id": "nex_msg_001",
+              "user": "nex_rohan",
+              "ts": "1794204000.000100",
+              "text": "Heads up: the v2 API migration is taking longer than planned. The billing endpoints need a schema change, so realistically I need until 19 Nov to finish it."
+            },
+            {
+              "type": "message",
+              "subtype": "message_changed",
+              "client_msg_id": "nex_msg_002",
+              "user": "nex_priya",
+              "ts": "1794314400.000100",
+              "text": "Update: the staging load test moves to 20 Nov, because it can only run after the API migration lands."
+            }
+          ]
+        },
+        {
+          "id": "nex_ch_general",
+          "name": "general",
+          "access_group_ids": [
+            "nex_g_general"
+          ],
+          "project_id": null,
+          "events": [
+            {
+              "type": "message",
+              "client_msg_id": "nex_msg_004",
+              "user": "nex_dev",
+              "ts": "1794456000.000100",
+              "text": "Atlas launch is on the 15th! Telling customers now."
+            },
+            {
+              "type": "message",
+              "subtype": "message_deleted",
+              "client_msg_id": "nex_msg_004",
+              "user": "nex_dev",
+              "ts": "1794456900.000100"
+            },
+            {
+              "type": "message",
+              "client_msg_id": "nex_msg_005",
+              "user": "nex_arjun",
+              "ts": "1794458700.000100",
+              "text": "Project Atlas launch is now Monday 23 Nov. Pilot customers have been informed."
+            },
+            {
+              "type": "message",
+              "client_msg_id": "nex_msg_006",
+              "user": "nex_dev",
+              "ts": "1794558600.000100",
+              "text": "Great news: we've now signed 5 pilot customers for Atlas!"
+            }
+          ]
+        },
+        {
+          "id": "nex_ch_beacon",
+          "name": "beacon",
+          "access_group_ids": [
+            "nex_g_engineering",
+            "nex_g_product"
+          ],
+          "project_id": "nex_proj_beacon",
+          "events": [
+            {
+              "type": "message",
+              "client_msg_id": "nex_msg_008",
+              "user": "nex_arjun",
+              "ts": "1793860200.000100",
+              "text": "Beacon v0.3 is live: the weekly active users chart now excludes internal accounts."
+            }
+          ]
+        },
+        {
+          "id": "nex_ch_leadership",
+          "name": "leadership",
+          "access_group_ids": [
+            "nex_g_leadership"
+          ],
+          "project_id": null,
+          "events": [
+            {
+              "type": "message",
+              "client_msg_id": "nex_msg_007",
+              "user": "nex_meera",
+              "ts": "1794571200.000100",
+              "text": "Approved the Q4 hiring plan: two backend engineers and one QA engineer. Kavya will start sourcing next week."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "organisation_id": "org_vertex",
+      "workspace_name": "vertex-retail",
+      "channels": [
+        {
+          "id": "vtx_ch_ops",
+          "name": "ops",
+          "access_group_ids": [
+            "vtx_g_ops"
+          ],
+          "project_id": "vtx_proj_atlas",
+          "events": [
+            {
+              "type": "message",
+              "client_msg_id": "vtx_msg_001",
+              "user": "vtx_sana",
+              "ts": "1794112200.000100",
+              "text": "Atlas rollout: the first 10 stores go live on 15 January 2027."
+            },
+            {
+              "type": "message",
+              "client_msg_id": "vtx_msg_002",
+              "user": "vtx_vikram",
+              "ts": "1794113400.000100",
+              "text": "The POS vendor shortlist for Atlas is down to two vendors."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

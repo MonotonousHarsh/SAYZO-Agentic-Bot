@@ -1,0 +1,364 @@
+{
+  "workspaces": [
+    {
+      "organisation_id": "org_nexora",
+      "workspace_name": "nexora-labs",
+      "channels": [
+        {
+          "id": "nex_ch_atlas_dev",
+          "name": "atlas-dev",
+          "access_group_ids": [
+            "nex_g_engineering",
+            "nex_g_product"
+          ],
+          "project_id": "nex_proj_atlas",
+          "events": [
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "nex_msg_001",
+              "user": "nex_rohan",
+              "ts": "1794204000.000100",
+              "text": "Heads up: the v2 API migration is taking longer than planned. The billing endpoints need a schema change, so realistically I need until 19 Nov to finish it."
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "nex_msg_002",
+              "user": "nex_priya",
+              "ts": "1794204720.000100",
+              "text": "Staging load test for Atlas is planned for 18 Nov."
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "nex_msg_003",
+              "user": "nex_arjun",
+              "ts": "1794205200.000100",
+              "text": "Thanks both. Let's settle the launch timeline in tomorrow's Atlas weekly sync."
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "nex_msg_001",
+              "user": "nex_rohan",
+              "ts": "1794204000.000100",
+              "text": "Heads up: the v2 API migration is taking longer than planned. The billing endpoints need a schema change, so realistically I need until 19 Nov to finish it."
+            },
+            {
+              "type": "message",
+              "subtype": "message_changed",
+              "client_msg_id": "nex_msg_002",
+              "user": "nex_priya",
+              "ts": "1794314400.000100",
+              "text": "Update: the staging load test moves to 20 Nov, because it can only run after the API migration lands."
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "gen_msg_0001",
+              "user": "nex_rohan",
+              "ts": "1795018442.777572",
+              "text": "I’ve reproduced the intermittent login error on the staging API."
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "gen_msg_0002",
+              "user": "nex_priya",
+              "ts": "1795019582.256787",
+              "text": "The CI pipeline flagged the failing test in auth-service."
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "gen_msg_0003",
+              "user": "nex_meera",
+              "ts": "1795020542.146316",
+              "text": "Let’s prioritize fixing the null pointer in the token validator."
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "gen_msg_0004",
+              "user": "nex_arjun",
+              "ts": "1795021022.709570",
+              "text": "Can we add a quick regression test before the next sprint?"
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "gen_msg_0005",
+              "user": "nex_arjun",
+              "ts": "1794002355.631262",
+              "text": "Need to finalize flag naming conventions for the new UI toggle."
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "gen_msg_0006",
+              "user": "nex_rohan",
+              "ts": "1794002535.588508",
+              "text": "I'll update the config repo with the new flag definitions by EOD."
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "gen_msg_0007",
+              "user": "nex_priya",
+              "ts": "1794003375.750800",
+              "text": "Make sure the CI pipeline validates flag schema before merge."
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "gen_msg_0008",
+              "user": "nex_meera",
+              "ts": "1794005955.735392",
+              "text": "Let's schedule a quick sync to review rollout steps."
+            }
+          ]
+        },
+        {
+          "id": "nex_ch_general",
+          "name": "general",
+          "access_group_ids": [
+            "nex_g_general"
+          ],
+          "project_id": null,
+          "events": [
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "nex_msg_004",
+              "user": "nex_dev",
+              "ts": "1794456000.000100",
+              "text": "Atlas launch is on the 15th! Telling customers now."
+            },
+            {
+              "type": "message",
+              "subtype": "message_deleted",
+              "client_msg_id": "nex_msg_004",
+              "user": "nex_dev",
+              "ts": "1794456900.000100",
+              "text": null
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "nex_msg_005",
+              "user": "nex_arjun",
+              "ts": "1794458700.000100",
+              "text": "Project Atlas launch is now Monday 23 Nov. Pilot customers have been informed."
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "nex_msg_006",
+              "user": "nex_dev",
+              "ts": "1794558600.000100",
+              "text": "Great news: we've now signed 5 pilot customers for Atlas!"
+            }
+          ]
+        },
+        {
+          "id": "nex_ch_beacon",
+          "name": "beacon",
+          "access_group_ids": [
+            "nex_g_engineering",
+            "nex_g_product"
+          ],
+          "project_id": "nex_proj_beacon",
+          "events": [
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "nex_msg_008",
+              "user": "nex_arjun",
+              "ts": "1793860200.000100",
+              "text": "Beacon v0.3 is live: the weekly active users chart now excludes internal accounts."
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "gen_msg_0009",
+              "user": "nex_meera",
+              "ts": "1795307781.732052",
+              "text": "I've noticed a spike in login error tickets; let's prioritize them."
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "gen_msg_0010",
+              "user": "nex_rohan",
+              "ts": "1795309521.356778",
+              "text": "I'll pull the recent logs and tag the failing cases."
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "gen_msg_0011",
+              "user": "nex_priya",
+              "ts": "1795310661.163032",
+              "text": "I'll set up a temporary monitoring alert for the affected endpoint."
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "gen_msg_0012",
+              "user": "nex_arjun",
+              "ts": "1795311561.800581",
+              "text": "Can we add a quick FAQ entry for users seeing the error?"
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "gen_msg_0013",
+              "user": "nex_meera",
+              "ts": "1795524007.277370",
+              "text": "We need to finalize the flag config before the next sprint."
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "gen_msg_0014",
+              "user": "nex_rohan",
+              "ts": "1795524247.765179",
+              "text": "I'll update the API endpoint to check the new flag."
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "gen_msg_0015",
+              "user": "nex_priya",
+              "ts": "1795526107.562275",
+              "text": "I'll add monitoring for the flag toggle in our CI pipeline."
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "gen_msg_0016",
+              "user": "nex_arjun",
+              "ts": "1795526647.967096",
+              "text": "User testing will focus on the search UI with the flag enabled."
+            }
+          ]
+        },
+        {
+          "id": "nex_ch_leadership",
+          "name": "leadership",
+          "access_group_ids": [
+            "nex_g_leadership"
+          ],
+          "project_id": null,
+          "events": [
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "nex_msg_007",
+              "user": "nex_meera",
+              "ts": "1794571200.000100",
+              "text": "Approved the Q4 hiring plan: two backend engineers and one QA engineer. Kavya will start sourcing next week."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "organisation_id": "org_vertex",
+      "workspace_name": "vertex-retail",
+      "channels": [
+        {
+          "id": "vtx_ch_ops",
+          "name": "ops",
+          "access_group_ids": [
+            "vtx_g_ops"
+          ],
+          "project_id": "vtx_proj_atlas",
+          "events": [
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "vtx_msg_001",
+              "user": "vtx_sana",
+              "ts": "1794112200.000100",
+              "text": "Atlas rollout: the first 10 stores go live on 15 January 2027."
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "vtx_msg_002",
+              "user": "vtx_vikram",
+              "ts": "1794113400.000100",
+              "text": "The POS vendor shortlist for Atlas is down to two vendors."
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "gen_msg_0017",
+              "user": "vtx_sana",
+              "ts": "1794969185.605397",
+              "text": "I saw three tickets on the sync lag, can we prioritize them today?"
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "gen_msg_0018",
+              "user": "vtx_vikram",
+              "ts": "1794970025.738797",
+              "text": "Sure, I’ll assign them to the devs and add test cases."
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "gen_msg_0019",
+              "user": "vtx_sana",
+              "ts": "1794970385.048050",
+              "text": "Please add a note about the edge‐case where SKU count exceeds 10k."
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "gen_msg_0020",
+              "user": "vtx_vikram",
+              "ts": "1794973025.238968",
+              "text": "Will do. I’ll also update the runbook with the new steps."
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "gen_msg_0021",
+              "user": "vtx_sana",
+              "ts": "1795010709.170555",
+              "text": "Can we get an update on the POS device config test results from the new store?"
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "gen_msg_0022",
+              "user": "vtx_vikram",
+              "ts": "1795012209.372528",
+              "text": "The latest batch passed basic connectivity, but we saw mismatched tax codes in two terminals."
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "gen_msg_0023",
+              "user": "vtx_sana",
+              "ts": "1795013109.702729",
+              "text": "Please add those tax code mappings to the config script and run regression."
+            },
+            {
+              "type": "message",
+              "subtype": null,
+              "client_msg_id": "gen_msg_0024",
+              "user": "vtx_vikram",
+              "ts": "1795014249.735911",
+              "text": "Will push the updated script to the test lab by EOD."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

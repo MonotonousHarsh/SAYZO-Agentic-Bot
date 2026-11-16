@@ -1,0 +1,154 @@
+{
+  "organisations": [
+    {
+      "id": "org_nexora",
+      "name": "Nexora Labs",
+      "slug": "nexora-labs",
+      "people": [
+        {
+          "id": "nex_meera",
+          "name": "Meera Iyer",
+          "email": "meera@nexora.example",
+          "title": "CTO",
+          "role": "ADMIN",
+          "access_group_ids": [
+            "nex_g_general",
+            "nex_g_engineering",
+            "nex_g_leadership"
+          ]
+        },
+        {
+          "id": "nex_rohan",
+          "name": "Rohan Verma",
+          "email": "rohan@nexora.example",
+          "title": "Backend Engineer",
+          "role": "MEMBER",
+          "access_group_ids": [
+            "nex_g_general",
+            "nex_g_engineering"
+          ]
+        },
+        {
+          "id": "nex_priya",
+          "name": "Priya Nair",
+          "email": "priya@nexora.example",
+          "title": "DevOps Engineer",
+          "role": "MEMBER",
+          "access_group_ids": [
+            "nex_g_general",
+            "nex_g_engineering"
+          ]
+        },
+        {
+          "id": "nex_arjun",
+          "name": "Arjun Mehta",
+          "email": "arjun@nexora.example",
+          "title": "Product Manager",
+          "role": "MEMBER",
+          "access_group_ids": [
+            "nex_g_general",
+            "nex_g_product"
+          ]
+        },
+        {
+          "id": "nex_kavya",
+          "name": "Kavya Rao",
+          "email": "kavya@nexora.example",
+          "title": "HR Lead",
+          "role": "MEMBER",
+          "access_group_ids": [
+            "nex_g_general",
+            "nex_g_hr"
+          ]
+        },
+        {
+          "id": "nex_dev",
+          "name": "Dev Malhotra",
+          "email": "dev@nexora.example",
+          "title": "Sales Executive",
+          "role": "VIEWER",
+          "access_group_ids": [
+            "nex_g_general"
+          ]
+        }
+      ],
+      "access_groups": [
+        {
+          "id": "nex_g_general",
+          "name": "Everyone"
+        },
+        {
+          "id": "nex_g_engineering",
+          "name": "Engineering"
+        },
+        {
+          "id": "nex_g_product",
+          "name": "Product"
+        },
+        {
+          "id": "nex_g_leadership",
+          "name": "Leadership"
+        },
+        {
+          "id": "nex_g_hr",
+          "name": "HR"
+        }
+      ],
+      "projects": [
+        {
+          "id": "nex_proj_atlas",
+          "name": "Project Atlas"
+        },
+        {
+          "id": "nex_proj_beacon",
+          "name": "Project Beacon"
+        }
+      ]
+    },
+    {
+      "id": "org_vertex",
+      "name": "Vertex Retail",
+      "slug": "vertex-retail",
+      "people": [
+        {
+          "id": "vtx_sana",
+          "name": "Sana Kapoor",
+          "email": "sana@vertex.example",
+          "title": "Head of Operations",
+          "role": "ADMIN",
+          "access_group_ids": [
+            "vtx_g_general",
+            "vtx_g_ops"
+          ]
+        },
+        {
+          "id": "vtx_vikram",
+          "name": "Vikram Shah",
+          "email": "vikram@vertex.example",
+          "title": "Store Rollout Lead",
+          "role": "MEMBER",
+          "access_group_ids": [
+            "vtx_g_general",
+            "vtx_g_ops"
+          ]
+        }
+      ],
+      "access_groups": [
+        {
+          "id": "vtx_g_general",
+          "name": "Everyone"
+        },
+        {
+          "id": "vtx_g_ops",
+          "name": "Operations"
+        }
+      ],
+      "projects": [
+        {
+          "id": "vtx_proj_atlas",
+          "name": "Project Atlas"
+        }
+      ]
+    }
+  ]
+}
