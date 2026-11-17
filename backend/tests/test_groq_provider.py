@@ -60,11 +60,11 @@ def test_retries_rate_limits_then_succeeds() -> None:
 
 def test_gives_up_after_bounded_retries() -> None:
     seen: list[httpx.Request] = []
-    provider = provider_with([httpx.Response(503)] * 3, seen)
+    provider = provider_with([httpx.Response(503)] * 4, seen)
 
     with pytest.raises(LLMProviderUnavailable):
         ask(provider)
-    assert len(seen) == 3
+    assert len(seen) == 4
 
 
 def test_does_not_retry_client_errors() -> None:
@@ -83,3 +83,46 @@ def test_regenerates_once_when_reply_does_not_match_schema() -> None:
     with pytest.raises(StructuredOutputError):
         ask(provider)
     assert len(seen) == 2
+
+
+def test_honours_retry_after_header() -> None:
+    seen: list[httpx.Request] = []
+    sleeps: list[float] = []
+    queue = [
+        httpx.Response(429, headers={"retry-after": "7"}),
+        reply('{"answer": "ok", "confident": true}'),
+    ]
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        seen.append(request)
+        return queue.pop(0)
+
+    client = httpx.Client(base_url="https://groq.test", transport=httpx.MockTransport(handler))
+    provider = GroqProvider(api_key="k", model="m", client=client, sleep=sleeps.append)
+
+    assert ask(provider).answer == "ok"
+    assert sleeps == [7.0]
+
+
+def test_paces_requests_to_the_configured_rate() -> None:
+    sleeps: list[float] = []
+    now = [100.0]
+
+    def handler(_request: httpx.Request) -> httpx.Response:
+        return reply('{"answer": "ok", "confident": true}')
+
+    client = httpx.Client(base_url="https://groq.test", transport=httpx.MockTransport(handler))
+    provider = GroqProvider(
+        api_key="k",
+        model="m",
+        client=client,
+        requests_per_minute=30,
+        sleep=sleeps.append,
+        clock=lambda: now[0],
+    )
+
+    ask(provider)
+    now[0] += 0.5
+    ask(provider)
+
+    assert sleeps == [1.5]  # 30 per minute = one request every 2 seconds

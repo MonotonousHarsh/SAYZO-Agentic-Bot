@@ -3,7 +3,8 @@
 Replies are requested in strict JSON-schema mode and then validated again with Pydantic,
 because the application must never trust model output that it has not checked itself.
 Transient failures (rate limits, server errors, timeouts) are retried a bounded number of
-times; anything else fails fast.
+times, honouring Groq's Retry-After header; anything else fails fast. An optional request
+rate keeps bulk jobs (like graph extraction) under the free tier's per-minute limit.
 """
 
 import logging
@@ -23,6 +24,7 @@ from app.shared.llm.interfaces import (
 logger = logging.getLogger(__name__)
 
 RETRYABLE_STATUS_CODES = frozenset({429, 500, 502, 503, 504})
+MAX_RETRY_DELAY_SECONDS = 30.0
 
 
 class GroqProvider:
@@ -33,11 +35,13 @@ class GroqProvider:
         model: str,
         base_url: str = "https://api.groq.com/openai/v1",
         timeout_seconds: float = 60.0,
-        max_attempts: int = 3,
+        max_attempts: int = 4,
         max_validation_attempts: int = 2,
         max_completion_tokens: int = 4096,
+        requests_per_minute: float | None = None,
         client: httpx.Client | None = None,
         sleep: Callable[[float], None] = time.sleep,
+        clock: Callable[[], float] = time.monotonic,
     ) -> None:
         if not api_key:
             raise ValueError("A Groq API key is required.")
@@ -46,6 +50,9 @@ class GroqProvider:
         self._max_validation_attempts = max_validation_attempts
         self._max_completion_tokens = max_completion_tokens
         self._sleep = sleep
+        self._clock = clock
+        self._min_interval = 60.0 / requests_per_minute if requests_per_minute else 0.0
+        self._last_request_at: float | None = None
         self._client = client or httpx.Client(
             base_url=base_url,
             timeout=timeout_seconds,
@@ -112,10 +119,12 @@ class GroqProvider:
 
     def _post_with_retries(self, payload: dict[str, Any]) -> str:
         for attempt in range(1, self._max_attempts + 1):
+            self._wait_for_rate_limit()
             try:
                 response = self._client.post("/chat/completions", json=payload)
             except httpx.TransportError as error:
                 problem = f"network error: {error}"
+                retry_after = None
             else:
                 if response.status_code == 200:
                     return _extract_content(response)
@@ -124,13 +133,29 @@ class GroqProvider:
                         f"Groq returned {response.status_code}: {response.text[:500]}"
                     )
                 problem = f"Groq returned {response.status_code}"
+                retry_after = _retry_after_seconds(response)
 
             if attempt < self._max_attempts:
-                delay = 2.0 ** (attempt - 1)
+                delay = retry_after if retry_after is not None else 2.0 ** (attempt - 1)
                 logger.warning("%s; retrying in %.0fs", problem, delay)
                 self._sleep(delay)
 
         raise LLMProviderUnavailable(f"Groq still failing after {self._max_attempts} attempts")
+
+    def _wait_for_rate_limit(self) -> None:
+        if self._min_interval and self._last_request_at is not None:
+            remaining = self._min_interval - (self._clock() - self._last_request_at)
+            if remaining > 0:
+                self._sleep(remaining)
+        self._last_request_at = self._clock()
+
+
+def _retry_after_seconds(response: httpx.Response) -> float | None:
+    value = response.headers.get("retry-after")
+    try:
+        return min(float(value), MAX_RETRY_DELAY_SECONDS) if value is not None else None
+    except ValueError:
+        return None
 
 
 def _extract_content(response: httpx.Response) -> str:

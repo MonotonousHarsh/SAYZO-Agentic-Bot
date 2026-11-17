@@ -21,9 +21,17 @@ class Settings(BaseSettings):
     groq_model: str = "openai/gpt-oss-120b"
     groq_base_url: str = "https://api.groq.com/openai/v1"
     groq_timeout_seconds: float = Field(default=60.0, gt=0)
+    # Free-tier friendly pacing for bulk jobs such as graph extraction. 0 disables pacing.
+    groq_requests_per_minute: float = Field(default=25.0, ge=0)
 
     # Database (Supabase Postgres, session pooler URI)
     database_url: SecretStr | None = None
+
+    # Embeddings (Hugging Face model run locally through sentence-transformers). The dimension
+    # must match the vector column created by the migrations.
+    embedding_model: str = "BAAI/bge-base-en-v1.5"
+    embedding_dimension: int = 768
+    embedding_device: str = "cpu"
 
 
 @lru_cache
