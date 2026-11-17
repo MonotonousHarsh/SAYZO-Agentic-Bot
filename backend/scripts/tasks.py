@@ -8,13 +8,14 @@ Usage (from the backend folder):
     python scripts/tasks.py status --as nex_rohan <task-id> COMPLETED
     python scripts/tasks.py history --as nex_meera <task-id>
 
---confirm uses idempotency keys derived from the request, so running it twice does not create
-duplicates: the second run reports the existing tasks.
+--confirm derives one idempotency key per task from its title, assignee and due date, so
+confirming again does not create duplicates: the second run reports the existing tasks.
 """
 
 import argparse
 import hashlib
 import sys
+from datetime import date
 from uuid import UUID
 
 from app import bootstrap
@@ -26,9 +27,11 @@ from app.modules.tasks import (
     IdempotencyConflict,
     InvalidTask,
     Task,
+    TaskDraft,
     TaskNotFound,
     TaskStatus,
 )
+from app.shared.text import normalise_name
 
 
 def main() -> int:
@@ -64,10 +67,26 @@ def main() -> int:
             if not args.confirm:
                 print("\nNothing was created. Re-run with --confirm to create these tasks.")
                 return 0
-            base = hashlib.sha256(f"{access.member_id}:{args.request}".encode()).hexdigest()[:16]
             print()
-            for n, draft in enumerate(proposal.drafts, start=1):
-                result = tasks.create(access, draft, idempotency_key=f"cli-{base}-{n}")
+            existing = {
+                task_signature(t.title, t.assigned_to, t.due_date): t
+                for t in tasks.list_tasks(access)
+            }
+            for draft in proposal.drafts:
+                match = existing.get(
+                    task_signature(draft.title, draft.assignee_member_id, draft.due_date)
+                )
+                if match is not None:
+                    print(f"Already exists: {match.title} ({match.id})")
+                    continue
+                key = confirmation_key(access.member_id, draft)
+                try:
+                    result = tasks.create(access, draft, idempotency_key=key)
+                except IdempotencyConflict:
+                    # Same task (title, assignee, due date) confirmed before, but the model
+                    # worded some detail differently this time: keep the original.
+                    print(f"Already created earlier (kept the original): {draft.title}")
+                    continue
                 verb = "Already created" if result.replayed else "Created"
                 print(f"{verb}: {result.task.title} ({result.task.id})")
         elif args.command == "list":
@@ -88,6 +107,18 @@ def main() -> int:
         print(f"Error: {error}", file=sys.stderr)
         return 1
     return 0
+
+
+def task_signature(title: str, assignee: UUID | None, due: date | None) -> str:
+    """A task as the user sees it: what, who, when."""
+    return "|".join([normalise_name(title), str(assignee), str(due)])
+
+
+def confirmation_key(member: UUID, draft: TaskDraft) -> str:
+    """One key per task signature, so confirming the same proposal again cannot create
+    duplicates even when the model rewords the description."""
+    signature = task_signature(draft.title, draft.assignee_member_id, draft.due_date)
+    return "cli-" + hashlib.sha256(f"{member}|{signature}".encode()).hexdigest()[:32]
 
 
 def print_task(task: Task) -> None:
