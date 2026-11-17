@@ -10,8 +10,11 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 
 from app.modules.answering.prompt import DraftAnswer
+from app.shared.text import clean_text
 
 _GROUP = re.compile(r"\[(\d+(?:\s*,\s*\d+)*)\]")
+# "Source 3 says..." breaks once citations are renumbered; only [n] markers are allowed.
+_NUMBERED_MENTION = re.compile(r"\bsources?\s*#?\d", re.IGNORECASE)
 
 
 @dataclass(frozen=True)
@@ -46,6 +49,11 @@ def problems(draft: DraftAnswer, source_count: int) -> list[str]:
         found.append("an ANSWERED reply must cite at least one source as [n]")
     if draft.status == "CONFLICTING_EVIDENCE" and len(set(numbers)) < 2:
         found.append("a CONFLICTING_EVIDENCE reply must cite each disagreeing source")
+    if _NUMBERED_MENTION.search(text):
+        found.append(
+            "do not write 'Source N' in the text; name the source by its title or author "
+            "and cite it only with [n] markers"
+        )
     return found
 
 
@@ -61,5 +69,6 @@ def renumber(draft: DraftAnswer) -> CheckedAnswer:
 
 
 def check(draft: DraftAnswer, source_count: int) -> tuple[CheckedAnswer | None, Sequence[str]]:
+    draft = DraftAnswer(status=draft.status, answer=clean_text(draft.answer))
     found = problems(draft, source_count)
     return (None, found) if found else (renumber(draft), ())

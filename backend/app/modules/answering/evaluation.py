@@ -14,6 +14,7 @@ from app.modules.identity.ids import organisation_id
 from app.modules.synthetic_data import SyntheticDataset
 from app.modules.synthetic_data.evaluation import EvaluationQuestion, ExpectedBehaviour
 from app.modules.synthetic_data.index import DatasetIndex
+from app.shared.text import clean_text
 
 EXPECTED_STATUS = {
     ExpectedBehaviour.ANSWER: AnswerStatus.ANSWERED,
@@ -98,7 +99,7 @@ def _problems(
     if status is not expected:
         found.append(f"status {status.value}, expected {expected.value}")
         return found
-    lowered = text.casefold()
+    lowered = " ".join(clean_text(text).casefold().split())
     found += [
         f"missing '{s}'" for s in question.expected_answer_contains if s.casefold() not in lowered
     ]

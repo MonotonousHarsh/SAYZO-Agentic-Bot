@@ -159,3 +159,18 @@ def test_two_bad_drafts_fail_safely() -> None:
 def test_provider_failure_is_reported_not_raised() -> None:
     answers, _ = service([hit("plan", "x")], [LLMError("down")])
     assert answers.answer(ACCESS, "q").status is AnswerStatus.FAILED
+
+
+def test_model_typography_is_normalised_before_checking() -> None:
+    raw = "Go-live is 15 January 2027 for the per‑host plan​ [1]."
+    checked, problems = check(DraftAnswer(status="ANSWERED", answer=raw), 1)
+    assert not problems and checked is not None
+    assert "15 January 2027" in checked.text and "​" not in checked.text
+
+
+def test_numbered_source_mentions_are_rejected() -> None:
+    draft = DraftAnswer(
+        status="CONFLICTING_EVIDENCE", answer="Source 1 says 3 [1]; source 3 says 5 [2]."
+    )
+    checked, problems = check(draft, 3)
+    assert checked is None and "Source N" in " ".join(problems)
