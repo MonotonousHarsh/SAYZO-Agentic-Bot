@@ -2,6 +2,7 @@
 
 from functools import lru_cache
 from pathlib import Path
+from typing import Literal
 
 from pydantic import Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -36,6 +37,17 @@ class Settings(BaseSettings):
     # Answering: chunks below this cosine similarity are not shown to the model (unless the
     # graph linked them to the question). Unrelated text scores about 0.40 with bge.
     answer_min_similarity: float = Field(default=0.5, ge=0, le=1)
+
+    # Supabase Auth. The publishable key is public (the browser uses it to sign in); the
+    # secret key is only used by scripts/create_demo_users.py and must never reach a browser.
+    supabase_url: str | None = None
+    supabase_publishable_key: str | None = None
+    supabase_secret_key: SecretStr | None = None
+    # Only for projects still on the legacy HS256 JWT secret; new projects use JWKS.
+    supabase_jwt_secret: SecretStr | None = None
+    # "supabase" in any real use. "dev" trusts an X-Dev-User header naming a directory person,
+    # for local demos and tests only; the API refuses to start in dev mode unless asked.
+    auth_mode: Literal["supabase", "dev"] = "supabase"
 
     # Time zone used to read and store task due dates (a due date means end of that day here).
     timezone: str = "Asia/Kolkata"

@@ -3,9 +3,17 @@
 from app.modules.conversations.models import (
     ChatTurn,
     ConversationNotFound,
+    ConversationSummary,
     StoredCitation,
     StoredMessage,
 )
 from app.modules.conversations.service import ChatService
 
-__all__ = ["ChatService", "ChatTurn", "ConversationNotFound", "StoredCitation", "StoredMessage"]
+__all__ = [
+    "ChatService",
+    "ChatTurn",
+    "ConversationNotFound",
+    "ConversationSummary",
+    "StoredCitation",
+    "StoredMessage",
+]

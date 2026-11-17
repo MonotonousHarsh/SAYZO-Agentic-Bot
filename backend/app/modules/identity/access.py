@@ -59,6 +59,49 @@ class AccessRepository:
             access_group_ids=frozenset(row.groups),
         )
 
+    def profile_for_auth_user(self, auth_user_id: UUID, email: str) -> UUID | None:
+        """The profile signed in as this Supabase user. On first sign-in the profile with the
+        same email is linked to the auth user; a profile already linked to a different auth
+        user is never taken over."""
+        linked = self._db.execute(
+            text("SELECT id FROM profiles WHERE auth_user_id = :uid"), {"uid": auth_user_id}
+        ).scalar_one_or_none()
+        if linked is not None:
+            return linked
+        return self._db.execute(
+            text(
+                "UPDATE profiles SET auth_user_id = :uid "
+                "WHERE lower(email) = lower(:email) AND auth_user_id IS NULL RETURNING id"
+            ),
+            {"uid": auth_user_id, "email": email},
+        ).scalar_one_or_none()
+
+    def memberships_of_profile(self, profile_id: UUID) -> list[tuple[UUID, UUID, str]]:
+        """(organisation id, member id, organisation name) for the profile's memberships."""
+        rows = self._db.execute(
+            text(
+                """
+                SELECT m.organisation_id, m.id, o.name FROM organisation_members m
+                JOIN organisations o ON o.id = m.organisation_id
+                WHERE m.profile_id = :profile AND m.status = 'ACTIVE'
+                ORDER BY o.name
+                """
+            ),
+            {"profile": profile_id},
+        ).all()
+        return [(row.organisation_id, row.id, row.name) for row in rows]
+
+    def group_names(self, organisation_id: UUID, group_ids: frozenset[UUID]) -> list[str]:
+        return list(
+            self._db.execute(
+                text(
+                    "SELECT name FROM access_groups WHERE organisation_id = :org "
+                    "AND id = ANY(CAST(:ids AS uuid[])) ORDER BY name"
+                ),
+                {"org": organisation_id, "ids": [str(g) for g in group_ids]},
+            ).scalars()
+        )
+
     def memberships(self, person_key: str) -> list[tuple[UUID, UUID]]:
         """(organisation id, member id) for every organisation the person belongs to."""
         rows = self._db.execute(
@@ -126,6 +169,39 @@ class AccessService:
         if context is None:
             raise AccessDenied("not an active member of this organisation")
         return context
+
+    def for_auth_user(
+        self, auth_user_id: UUID, email: str, organisation_id: UUID | None = None
+    ) -> AccessContext:
+        """Resolve a signed-in Supabase user to a member of one organisation."""
+        with self._unit_of_work() as uow:
+            repository = AccessRepository(uow.connection)
+            profile = repository.profile_for_auth_user(auth_user_id, email)
+            if profile is None:
+                raise AccessDenied("this account is not in the company directory")
+            memberships = repository.memberships_of_profile(profile)
+            if organisation_id is not None:
+                memberships = [m for m in memberships if m[0] == organisation_id]
+            if not memberships:
+                raise AccessDenied("not an active member of this organisation")
+            if len(memberships) > 1:
+                raise AccessDenied("member of several organisations; choose one")
+            context = repository.load(memberships[0][0], memberships[0][1])
+        if context is None:
+            raise AccessDenied("not an active member of this organisation")
+        return context
+
+    def organisation_name_and_groups(self, access: AccessContext) -> tuple[str, list[str]]:
+        with self._unit_of_work() as uow:
+            connection = uow.connection
+            name = connection.execute(
+                text("SELECT name FROM organisations WHERE id = :id"),
+                {"id": access.organisation_id},
+            ).scalar_one()
+            groups = AccessRepository(connection).group_names(
+                access.organisation_id, access.access_group_ids
+            )
+        return name, groups
 
     def for_person(self, person_key: str, organisation_id: UUID | None = None) -> AccessContext:
         """Resolve a directory person (e.g. "nex_arjun"). Used by scripts and evaluation;

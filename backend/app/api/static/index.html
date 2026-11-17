@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SAYZO</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <section id="signin" class="signin" hidden>
+    <div class="card">
+      <h1>SAYZO</h1>
+      <p class="muted">Company knowledge assistant</p>
+      <form id="signin-form">
+        <div id="supabase-fields">
+          <label>Email <input id="email" type="email" autocomplete="username" required></label>
+          <label>Password <input id="password" type="password" autocomplete="current-password" required></label>
+        </div>
+        <div id="dev-fields" hidden>
+          <p class="banner">Dev sign-in: no password, for local demos only.</p>
+          <label>Sign in as <select id="dev-person"></select></label>
+        </div>
+        <button type="submit">Sign in</button>
+        <p id="signin-error" class="error" role="alert"></p>
+      </form>
+    </div>
+  </section>
+
+  <main id="app" class="app" hidden>
+    <header class="topbar">
+      <strong>SAYZO</strong>
+      <span id="me" class="muted"></span>
+      <button id="signout" class="link">Sign out</button>
+    </header>
+
+    <nav class="sidebar">
+      <button id="new-chat">+ New chat</button>
+      <ul id="conversations"></ul>
+    </nav>
+
+    <section class="chat">
+      <div id="messages" class="messages" aria-live="polite"></div>
+      <form id="ask" class="ask">
+        <textarea id="question" rows="2" maxlength="2000"
+          placeholder="Ask about your projects, or: Create tasks for the action items in the Atlas weekly sync"></textarea>
+        <button type="submit" id="send">Send</button>
+      </form>
+    </section>
+
+    <aside class="tasks">
+      <div class="tasks-head">
+        <h2>Tasks</h2>
+        <label class="muted"><input type="checkbox" id="mine"> mine</label>
+      </div>
+      <ul id="task-list"></ul>
+    </aside>
+  </main>
+</body>
+</html>

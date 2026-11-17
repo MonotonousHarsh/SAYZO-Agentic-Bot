@@ -34,6 +34,13 @@ class StoredMessage:
 
 
 @dataclass(frozen=True)
+class ConversationSummary:
+    id: UUID
+    title: str
+    updated_at: datetime
+
+
+@dataclass(frozen=True)
 class ChatTurn:
     conversation_id: UUID
     reply: StoredMessage

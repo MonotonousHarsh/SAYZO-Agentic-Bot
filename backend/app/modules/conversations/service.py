@@ -12,7 +12,12 @@ from uuid import UUID
 from sqlalchemy.exc import IntegrityError
 
 from app.modules.answering import Answer, AnswerService, AnswerStatus, Citation
-from app.modules.conversations.models import ChatTurn, ConversationNotFound, StoredMessage
+from app.modules.conversations.models import (
+    ChatTurn,
+    ConversationNotFound,
+    ConversationSummary,
+    StoredMessage,
+)
 from app.modules.conversations.repository import ConversationRepository
 from app.modules.identity import AccessContext
 from app.modules.tasks import ActionDenied, TaskProposal, TaskProposalService, is_task_request
@@ -107,6 +112,13 @@ class ChatService:
         except LLMError:
             return _Reply(AnswerStatus.FAILED.value, "I couldn't draft tasks right now."), None
         return _Reply(STATUS_TASK_PROPOSED, describe(proposal)), proposal
+
+    def conversations(self, access: AccessContext) -> list[ConversationSummary]:
+        with self._unit_of_work() as uow:
+            rows = ConversationRepository(uow.connection).list_for(
+                access.organisation_id, access.member_id
+            )
+        return [ConversationSummary(r.id, r.title, r.updated_at) for r in rows]
 
     def history(self, access: AccessContext, conversation_id: UUID) -> list[StoredMessage]:
         with self._unit_of_work() as uow:

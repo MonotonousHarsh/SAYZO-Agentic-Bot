@@ -23,6 +23,18 @@ class ConversationRepository:
             {"id": conversation_id, "org": organisation_id},
         ).scalar_one_or_none()
 
+    def list_for(self, organisation_id: UUID, member_id: UUID, limit: int = 50) -> list:  # type: ignore[type-arg]
+        return list(
+            self._db.execute(
+                text(
+                    "SELECT id, title, updated_at FROM conversations WHERE organisation_id = :org "
+                    "AND created_by = :member AND deleted_at IS NULL "
+                    "ORDER BY updated_at DESC, id LIMIT :limit"
+                ),
+                {"org": organisation_id, "member": member_id, "limit": limit},
+            ).all()
+        )
+
     def create(self, organisation_id: UUID, member_id: UUID, title: str) -> UUID:
         return self._db.execute(
             text(
