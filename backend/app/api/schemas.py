@@ -26,10 +26,16 @@ class CitationOut(BaseModel):
     excerpt: str
     source_id: UUID | None
     chunk_id: UUID | None
+    source_type: str | None = None
+    location: str | None = None
+    occurred_at: datetime | None = None
 
     @classmethod
     def of(cls, citation: StoredCitation) -> "CitationOut":
         return cls(
+            source_type=citation.source_type,
+            location=citation.location,
+            occurred_at=citation.occurred_at,
             index=citation.index,
             source_title=citation.source_title,
             source_version=citation.source_version,
@@ -187,10 +193,23 @@ class MeResponse(BaseModel):
     access_groups: list[str]
 
 
+class DevPerson(BaseModel):
+    key: str
+    name: str
+    title: str | None
+    role: str
+    organisation: str
+
+
+class MemberOut(BaseModel):
+    member_id: UUID
+    full_name: str
+
+
 class PublicConfig(BaseModel):
     """Values the browser needs. All public: never put a secret here."""
 
     auth_mode: str
     supabase_url: str | None
     supabase_publishable_key: str | None
-    dev_people: list[str] = []
+    dev_people: list[DevPerson] = []

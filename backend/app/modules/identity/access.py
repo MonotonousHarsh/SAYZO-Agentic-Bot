@@ -191,6 +191,10 @@ class AccessService:
             raise AccessDenied("not an active member of this organisation")
         return context
 
+    def members(self, access: AccessContext) -> list["MemberRef"]:
+        with self._unit_of_work() as uow:
+            return MemberDirectory(uow.connection).active_members(access.organisation_id)
+
     def organisation_name_and_groups(self, access: AccessContext) -> tuple[str, list[str]]:
         with self._unit_of_work() as uow:
             connection = uow.connection

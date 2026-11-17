@@ -134,8 +134,10 @@ class ConversationRepository:
             text(
                 """
                 SELECT c.message_id, c.citation_index, c.source_id, c.chunk_id,
-                       c.source_version, c.source_title, c.excerpt
+                       c.source_version, c.source_title, c.excerpt,
+                       s.source_type, s.location, s.occurred_at
                 FROM message_citations c
+                LEFT JOIN sources s ON s.id = c.source_id AND s.status = 'ACTIVE'
                 WHERE c.organisation_id = :org AND c.message_id = ANY(CAST(:ids AS uuid[]))
                 ORDER BY c.message_id, c.citation_index
                 """
@@ -150,6 +152,9 @@ class ConversationRepository:
                     row.source_version,
                     row.source_title,
                     row.excerpt,
+                    row.source_type,
+                    row.location,
+                    row.occurred_at,
                 )
             )
         return [

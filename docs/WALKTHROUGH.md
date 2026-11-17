@@ -23,6 +23,16 @@ Demo accounts (all with the password you gave `create_demo_users.py`):
 | Dev Malhotra | dev@nexora.example | VIEWER | Everyone |
 | Sana Kapoor (Vertex Retail) | sana@vertex.example | ADMIN | Vertex: Everyone, Operations |
 
+## Recording tips
+
+- Keep it to about 5-8 minutes. Use the browser and one terminal side by side.
+- Show the person you're signed in as (top right) each time you switch, since access
+  control is the point of several steps.
+- Steps 1, 2, 4 and 6 cover the four things the brief asks to see: ingestion, answering
+  with sources, access control and task creation.
+- With `serve.py --dev-auth` you can switch people in one click (sign out from the menu at
+  the top right). Mention that the real sign-in uses Supabase.
+
 ## 1. Ingestion with edits and deletions over time (2 min)
 
 As **Arjun**, ask: *When is the Project Atlas launch?*
@@ -47,7 +57,7 @@ used.
 
 As **Rohan**: *Why was the Project Atlas launch moved, and what is the new date?*
 → Combines Rohan's #atlas-dev message (the API migration needs until the 19th), the Atlas
-weekly sync (the decision) and the launch plan. Click a `[n]` marker to jump to its source.
+weekly sync (the decision) and the launch plan. Click a citation number in the answer to highlight its source underneath.
 
 ## 3. Conflicts and abstention (1 min)
 
@@ -85,19 +95,20 @@ As **Meera**: *Create tasks for the action items agreed in the Atlas weekly sync
 20 Nov) and informing pilot customers (Arjun, 12 Nov, flagged as past due). Nothing exists
 yet.
 
-Click **Confirm selected tasks** → the tasks appear in the Tasks panel. Each proposed task
+Change something if you like (for example set a priority), then click **Create 3 tasks** →
+the tasks appear in the Tasks panel. Each proposed task
 has its own idempotency key, so a double click or a retried request can't create a
 duplicate.
 
-Sign in as **Rohan**, tick **mine** and set the API migration to *completed*. Click
-**history** to see `CREATED by Meera Iyer` and then `STATUS_CHANGED by Rohan Verma`. The
-audit trail is append-only.
+Sign in as **Rohan**, switch the Tasks panel to **Mine** and move the API migration to
+*Done*. Click **History** to see it was created by Meera Iyer and moved by Rohan Verma. The
+history is append-only.
 
 Sign in as **Priya** and try to change Rohan's task → refused (only the creator, the assignee
 or an admin may).
 
 Sign in as **Dev** (VIEWER): *Create a task for Rohan to fix the billing endpoints.*
-→ **Not allowed**: viewers can ask questions but not create tasks. The request never reached
+→ **Not allowed for your role**: viewers can ask questions but not create tasks. The request never reached
 the model.
 
 ## 7. The numbers (1 min)

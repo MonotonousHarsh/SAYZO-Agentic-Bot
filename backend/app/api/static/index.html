@@ -4,58 +4,77 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SAYZO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
   <link rel="stylesheet" href="/static/styles.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/static/app.js" defer></script>
 </head>
 <body>
+  <!-- Sign in -->
   <section id="signin" class="signin" hidden>
-    <div class="card">
-      <h1>SAYZO</h1>
-      <p class="muted">Company knowledge assistant</p>
-      <form id="signin-form">
-        <div id="supabase-fields">
-          <label>Email <input id="email" type="email" autocomplete="username" required></label>
-          <label>Password <input id="password" type="password" autocomplete="current-password" required></label>
-        </div>
-        <div id="dev-fields" hidden>
-          <p class="banner">Dev sign-in: no password, for local demos only.</p>
-          <label>Sign in as <select id="dev-person"></select></label>
-        </div>
-        <button type="submit">Sign in</button>
-        <p id="signin-error" class="error" role="alert"></p>
+    <div class="signin-panel">
+      <div class="brand-mark" aria-hidden="true">S</div>
+      <h1>Sign in to SAYZO</h1>
+      <p class="lede">Answers from your team's messages, documents and meetings, with the sources to prove them.</p>
+
+      <form id="signin-form" class="signin-form">
+        <label>Work email <input id="email" type="email" autocomplete="username" required></label>
+        <label>Password <input id="password" type="password" autocomplete="current-password" required></label>
+        <button type="submit" class="primary">Sign in</button>
       </form>
+
+      <div id="dev-signin" hidden>
+        <p class="notice">Demo sign-in: pick a person. No password, local use only.</p>
+        <div id="dev-people"></div>
+      </div>
+      <p id="signin-error" class="error" role="alert"></p>
     </div>
   </section>
 
-  <main id="app" class="app" hidden>
+  <!-- App -->
+  <div id="app" class="app" hidden>
     <header class="topbar">
-      <strong>SAYZO</strong>
-      <span id="me" class="muted"></span>
-      <button id="signout" class="link">Sign out</button>
+      <button id="toggle-chats" class="icon-button only-narrow" aria-label="Show conversations">☰</button>
+      <span class="brand"><span class="brand-mark small" aria-hidden="true">S</span>SAYZO</span>
+      <span id="org-name" class="org"></span>
+      <div class="who">
+        <button id="me-button" class="me" aria-expanded="false" aria-controls="me-card"></button>
+        <div id="me-card" class="me-card" hidden></div>
+      </div>
+      <button id="toggle-tasks" class="icon-button only-narrow" aria-label="Show tasks">✓</button>
     </header>
 
-    <nav class="sidebar">
-      <button id="new-chat">+ New chat</button>
+    <nav id="chats" class="chats" aria-label="Conversations">
+      <button id="new-chat" class="primary wide">New question</button>
+      <h2 class="side-heading">Recent</h2>
       <ul id="conversations"></ul>
     </nav>
 
-    <section class="chat">
+    <main class="thread">
       <div id="messages" class="messages" aria-live="polite"></div>
-      <form id="ask" class="ask">
-        <textarea id="question" rows="2" maxlength="2000"
-          placeholder="Ask about your projects, or: Create tasks for the action items in the Atlas weekly sync"></textarea>
-        <button type="submit" id="send">Send</button>
+      <form id="ask" class="composer">
+        <textarea id="question" rows="1" maxlength="2000" aria-label="Your question"
+          placeholder="Ask about a project, a decision or a person…"></textarea>
+        <button type="submit" id="send" class="primary">Ask</button>
+        <p class="composer-hint">Start with “Create tasks for…” to turn agreed action items into tasks. Nothing is created until you confirm.</p>
       </form>
-    </section>
+    </main>
 
-    <aside class="tasks">
+    <aside id="tasks" class="tasks" aria-label="Tasks">
       <div class="tasks-head">
         <h2>Tasks</h2>
-        <label class="muted"><input type="checkbox" id="mine"> mine</label>
+        <div class="segmented" role="group" aria-label="Which tasks">
+          <button id="tasks-all" class="on" aria-pressed="true">Team</button>
+          <button id="tasks-mine" aria-pressed="false">Mine</button>
+        </div>
       </div>
-      <ul id="task-list"></ul>
+      <div id="task-groups"></div>
     </aside>
-  </main>
+    <div id="scrim" class="scrim" hidden></div>
+  </div>
+
+  <div id="toast" class="toast" role="status" hidden></div>
 </body>
 </html>

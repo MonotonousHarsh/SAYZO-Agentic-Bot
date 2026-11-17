@@ -20,7 +20,7 @@ class Container:
     auth_mode: str
     supabase_url: str | None = None
     supabase_publishable_key: str | None = None
-    dev_people: tuple[str, ...] = ()
+    dev_people: tuple[dict, ...] = ()  # type: ignore[type-arg]
 
 
 def build_container(settings: Settings) -> Container:
@@ -54,12 +54,22 @@ def authenticator(settings: Settings) -> Authenticator:
     )
 
 
-def _directory_people(engine) -> tuple[str, ...]:  # type: ignore[no-untyped-def]
+def _directory_people(engine) -> tuple[dict, ...]:  # type: ignore[no-untyped-def,type-arg]
+    """Who can be picked on the dev sign-in screen."""
     from sqlalchemy import text
 
     with engine.connect() as connection:
-        return tuple(
-            connection.execute(text("SELECT external_key FROM profiles ORDER BY external_key"))
-            .scalars()
-            .all()
-        )
+        rows = connection.execute(
+            text(
+                """
+                SELECT p.external_key AS key, p.full_name AS name, m.title, m.role,
+                       o.name AS organisation
+                FROM profiles p
+                JOIN organisation_members m ON m.profile_id = p.id AND m.status = 'ACTIVE'
+                JOIN organisations o ON o.id = m.organisation_id
+                ORDER BY o.name, CASE m.role WHEN 'ADMIN' THEN 0 WHEN 'MEMBER' THEN 1 ELSE 2 END,
+                         p.full_name
+                """
+            )
+        ).mappings()
+        return tuple(dict(row) for row in rows)

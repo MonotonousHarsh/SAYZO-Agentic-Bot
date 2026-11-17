@@ -21,6 +21,10 @@ class StoredCitation:
     source_version: int
     source_title: str
     excerpt: str
+    # Read from the live source when it still exists; None once it is gone.
+    source_type: str | None = None
+    location: str | None = None
+    occurred_at: datetime | None = None
 
 
 @dataclass(frozen=True)

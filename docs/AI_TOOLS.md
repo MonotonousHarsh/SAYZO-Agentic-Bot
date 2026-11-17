@@ -9,8 +9,12 @@ built and what it runs on.
 
 | Tool | Used for |
 |---|---|
-| ChatGPT | Design discussions before coding: requirements, architecture, data model, retrieval and access-control approach, edge cases. |
+| ChatGPT | Design discussions before coding: requirements, architecture, data model, retrieval and access-control approach, edge cases. The high-level design diagrams in `docs/diagrams/` came out of this phase. |
 | Claude (Anthropic) | Writing the code module by module from that design, under my direction and review: synthetic seed data, ingestion, retrieval, answering, tasks, API, UI, tests and these docs. Each module was run and checked against real Supabase and Groq before the next one started, and fixes came from the observed output (for example, the citation and conflict rules in the answer prompt). |
+
+Libraries: FastAPI, Uvicorn, Pydantic, pydantic-settings, SQLAlchemy, psycopg 3, Alembic,
+pgvector, sentence-transformers (PyTorch), httpx, PyJWT, pytest, Ruff; supabase-js and
+Google Fonts in the browser.
 
 Decisions I made and enforced throughout: clean modular code that follows SOLID and
 low-level design principles; Supabase as the single store; open-weight Hugging Face

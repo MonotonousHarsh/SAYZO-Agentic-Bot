@@ -24,6 +24,8 @@ from app.api.schemas import (
     ConversationOut,
     CreateTaskRequest,
     CreateTaskResponse,
+    DevPerson,
+    MemberOut,
     MeResponse,
     MessageOut,
     PublicConfig,
@@ -97,7 +99,7 @@ def create_app(container_factory: Callable[[], Container]) -> FastAPI:
             auth_mode=services.auth_mode,
             supabase_url=services.supabase_url,
             supabase_publishable_key=services.supabase_publishable_key,
-            dev_people=list(services.dev_people),
+            dev_people=[DevPerson(**p) for p in services.dev_people],
         )
 
     @app.get("/api/me")
@@ -111,6 +113,14 @@ def create_app(container_factory: Callable[[], Container]) -> FastAPI:
             organisation_name=name,
             access_groups=groups,
         )
+
+    @app.get("/api/members")
+    def members(access: Access, services: Services) -> list[MemberOut]:
+        """Active members of my organisation, for choosing a task assignee."""
+        return [
+            MemberOut(member_id=m.member_id, full_name=m.full_name)
+            for m in services.access.members(access)
+        ]
 
     @app.post("/api/chat")
     def chat(body: ChatRequest, access: Access, services: Services) -> ChatResponse:

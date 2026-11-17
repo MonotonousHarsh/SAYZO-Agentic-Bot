@@ -71,7 +71,15 @@ def build(engine: Engine, dataset: SyntheticDataset, replies, authenticator=None
         ),
         tasks=TaskService(unit_of_work),
         auth_mode="dev",
-        dev_people=("nex_arjun",),
+        dev_people=(
+            {
+                "key": "nex_arjun",
+                "name": "Arjun Mehta",
+                "title": "PM",
+                "role": "MEMBER",
+                "organisation": "Nexora Labs",
+            },
+        ),
     )
     return TestClient(create_app(lambda: container)), llm
 
