@@ -33,7 +33,7 @@ other's data.
 | A working demo and instructions to run it | `python scripts/serve.py` serves the API and the web app on http://127.0.0.1:8000 ([quick start](#2-quick-start)) |
 | README covering architecture, assumptions, setup and known limitations | Sections [3](#3-architecture), [5](#5-assumptions), [13](#13-full-setup-reference) and [11](#11-known-limitations) |
 | A synthetic sample dataset and at least five test questions | [`datasets/seed/`](datasets/README.md): 2 companies, 3 source formats, 7 deliberate edge cases and **13** ground-truth questions ([section 6](#6-sample-dataset-and-test-scenarios)) |
-| A screen recording or live walkthrough of ingestion, answering with sources, task creation and access control | Script in [docs/WALKTHROUGH.md](docs/WALKTHROUGH.md). Recording: **add your video link here** |
+| A screen recording or live walkthrough of ingestion, answering with sources, task creation and access control | Recording: link shared with the submission. It follows the script in [docs/WALKTHROUGH.md](docs/WALKTHROUGH.md) |
 | A note on personal contribution and the tools, libraries, APIs, models and AI coding assistants used | [Section 12](#12-personal-contribution-and-tools-used) and [docs/AI_TOOLS.md](docs/AI_TOOLS.md) |
 
 ## 2. Quick start
@@ -329,7 +329,7 @@ Never point it at Supabase.
 
 [docs/WALKTHROUGH.md](docs/WALKTHROUGH.md) is a 10-minute script that shows ingestion,
 answering with sources, task creation and access control. Each step says what to do and what
-you should see. Recorded walkthrough: **add your video link here**.
+you should see. The recorded walkthrough shared with the submission follows this script.
 
 Useful command-line tools (all run from `backend/`):
 
@@ -409,8 +409,6 @@ python scripts/db_status.py                                               # row 
   The code waits and retries, so runs are slower but complete.
 
 ## 12. Personal contribution and tools used
-
-> **Edit this section in your own words before submitting.**
 
 **My contribution.** I analysed the brief and designed the system: the data flow,
 ingestion, query-to-answer and module diagrams above, the data model, the access model and

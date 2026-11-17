@@ -3,8 +3,6 @@
 The brief asks for a disclosure of the tools used. This covers both how the prototype was
 built and what it runs on.
 
-> Review this page before submitting and adjust it so it matches exactly how you worked.
-
 ## Tools used to build it
 
 | Tool | Used for |
