@@ -12,6 +12,7 @@ from sqlalchemy import Connection, text
 
 from app.modules.sources import Role
 from app.shared.database import UnitOfWork
+from app.shared.text import normalise_name
 
 
 class AccessDenied(Exception):
@@ -71,6 +72,48 @@ class AccessRepository:
             {"person": person_key},
         ).all()
         return [(row.organisation_id, row.id) for row in rows]
+
+
+@dataclass(frozen=True)
+class MemberRef:
+    member_id: UUID
+    full_name: str
+
+
+class MemberDirectory:
+    """Active members of an organisation, and name resolution against them."""
+
+    def __init__(self, connection: Connection) -> None:
+        self._db = connection
+
+    def active_members(self, organisation_id: UUID) -> list[MemberRef]:
+        rows = self._db.execute(
+            text(
+                """
+                SELECT m.id, p.full_name FROM organisation_members m
+                JOIN profiles p ON p.id = m.profile_id
+                WHERE m.organisation_id = :org AND m.status = 'ACTIVE'
+                ORDER BY p.full_name, m.id
+                """
+            ),
+            {"org": organisation_id},
+        ).all()
+        return [MemberRef(row.id, row.full_name) for row in rows]
+
+    def is_active_member(self, organisation_id: UUID, member_id: UUID) -> bool:
+        return any(m.member_id == member_id for m in self.active_members(organisation_id))
+
+
+def resolve_member(name: str, members: list[MemberRef]) -> MemberRef | None:
+    """Full name, or a first name that only one member has. Anything else is unresolved."""
+    wanted = normalise_name(name)
+    if not wanted:
+        return None
+    exact = [m for m in members if normalise_name(m.full_name) == wanted]
+    if len(exact) == 1:
+        return exact[0]
+    by_first = [m for m in members if normalise_name(m.full_name).split(" ")[0] == wanted]
+    return by_first[0] if len(by_first) == 1 else None
 
 
 class AccessService:

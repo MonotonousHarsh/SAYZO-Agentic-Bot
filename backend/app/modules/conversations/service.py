@@ -6,24 +6,35 @@ client_request_id returns the stored reply instead of answering, and storing, tw
 """
 
 from collections.abc import Callable
+from dataclasses import dataclass
 from uuid import UUID
 
 from sqlalchemy.exc import IntegrityError
 
-from app.modules.answering import AnswerService
+from app.modules.answering import Answer, AnswerService, AnswerStatus, Citation
 from app.modules.conversations.models import ChatTurn, ConversationNotFound, StoredMessage
 from app.modules.conversations.repository import ConversationRepository
 from app.modules.identity import AccessContext
+from app.modules.tasks import ActionDenied, TaskProposal, TaskProposalService, is_task_request
 from app.shared.database import UnitOfWork
+from app.shared.llm import LLMError
 
 TITLE_CHARS = 80
 MAX_REQUEST_ID_CHARS = 100
+STATUS_TASK_PROPOSED = "TASK_PROPOSED"
+STATUS_DENIED = "DENIED"
 
 
 class ChatService:
-    def __init__(self, unit_of_work: Callable[[], UnitOfWork], answers: AnswerService) -> None:
+    def __init__(
+        self,
+        unit_of_work: Callable[[], UnitOfWork],
+        answers: AnswerService,
+        proposals: TaskProposalService | None = None,
+    ) -> None:
         self._unit_of_work = unit_of_work
         self._answers = answers
+        self._proposals = proposals
 
     def ask(
         self,
@@ -45,7 +56,7 @@ class ChatService:
                     if stored is not None:
                         return ChatTurn(conversation_id, stored, replayed=True)
 
-        answer = self._answers.answer(access, question)
+        response, proposal = self._respond(access, question)
 
         try:
             with self._unit_of_work() as uow:
@@ -63,11 +74,11 @@ class ChatService:
                     access.organisation_id,
                     conversation_id,
                     "ASSISTANT",
-                    answer.text,
-                    answer.status.value,
+                    response.text,
+                    response.status,
                     client_request_id,
                 )
-                repository.add_citations(access.organisation_id, reply_id, answer.citations)
+                repository.add_citations(access.organisation_id, reply_id, response.citations)
                 (reply,) = repository.messages(
                     access.organisation_id, conversation_id, only=reply_id
                 )
@@ -82,7 +93,20 @@ class ChatService:
             if stored is None:
                 raise
             return ChatTurn(conversation_id, stored, replayed=True)
-        return ChatTurn(conversation_id, reply)
+        return ChatTurn(conversation_id, reply, proposal=proposal)
+
+    def _respond(self, access: AccessContext, message: str) -> tuple["_Reply", TaskProposal | None]:
+        """Task requests get a proposal for the user to confirm; everything else an answer.
+        Which path is taken is decided by code, never by the model."""
+        if self._proposals is None or not is_task_request(message):
+            return _Reply.of(self._answers.answer(access, message)), None
+        try:
+            proposal = self._proposals.propose(access, message)
+        except ActionDenied as error:
+            return _Reply(STATUS_DENIED, str(error)), None
+        except LLMError:
+            return _Reply(AnswerStatus.FAILED.value, "I couldn't draft tasks right now."), None
+        return _Reply(STATUS_TASK_PROPOSED, describe(proposal)), proposal
 
     def history(self, access: AccessContext, conversation_id: UUID) -> list[StoredMessage]:
         with self._unit_of_work() as uow:
@@ -96,6 +120,34 @@ class ChatService:
     ) -> None:
         if repository.owner_of(access.organisation_id, conversation_id) != access.member_id:
             raise ConversationNotFound("conversation not found")
+
+
+@dataclass(frozen=True)
+class _Reply:
+    status: str
+    text: str
+    citations: tuple[Citation, ...] = ()
+
+    @classmethod
+    def of(cls, answer: Answer) -> "_Reply":
+        return cls(answer.status.value, answer.text, answer.citations)
+
+
+def describe(proposal: TaskProposal) -> str:
+    """The proposal as the stored reply text. Nothing is created until the user confirms."""
+    if proposal.is_empty:
+        return proposal.note
+    lines = [f"I can create {len(proposal.drafts)} task(s). Please review and confirm:"]
+    for n, draft in enumerate(proposal.drafts, start=1):
+        details = [
+            draft.assignee_name or "unassigned",
+            f"due {draft.due_date:%d %b %Y}" if draft.due_date else "no due date",
+            draft.priority.value.lower(),
+        ]
+        source = f" (from {draft.evidence_title})" if draft.evidence_title else ""
+        lines.append(f"{n}. {draft.title} - {', '.join(details)}{source}")
+        lines += [f"   ! {warning}" for warning in draft.warnings]
+    return "\n".join(lines)
 
 
 def _title(question: str) -> str:

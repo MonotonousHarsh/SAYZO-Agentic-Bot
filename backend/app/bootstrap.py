@@ -2,12 +2,16 @@
 tests build services directly with fakes."""
 
 from collections.abc import Callable
+from datetime import date, datetime
+from zoneinfo import ZoneInfo
 
 from sqlalchemy import Engine
 
 from app.config import Settings
 from app.modules.answering import AnswerService, EvidencePolicy, EvidenceSelector
+from app.modules.conversations import ChatService
 from app.modules.retrieval import RetrievalService
+from app.modules.tasks import TaskProposalService, TaskService
 from app.shared.database import UnitOfWork, create_database_engine
 from app.shared.embeddings import EmbeddingProvider
 from app.shared.llm import LLMProvider
@@ -51,11 +55,62 @@ def llm(settings: Settings) -> LLMProvider:
     )
 
 
+def retrieval_service(
+    settings: Settings,
+    unit_of_work: Callable[[], UnitOfWork],
+    embeddings: EmbeddingProvider | None = None,
+) -> RetrievalService:
+    return RetrievalService(unit_of_work, embeddings or embedder(settings))
+
+
+def evidence_selector(settings: Settings) -> EvidenceSelector:
+    return EvidenceSelector(EvidencePolicy(min_similarity=settings.answer_min_similarity))
+
+
 def answer_service(
     settings: Settings,
     unit_of_work: Callable[[], UnitOfWork],
     embeddings: EmbeddingProvider | None = None,
 ) -> AnswerService:
-    retrieval = RetrievalService(unit_of_work, embeddings or embedder(settings))
-    selector = EvidenceSelector(EvidencePolicy(min_similarity=settings.answer_min_similarity))
-    return AnswerService(retrieval, llm(settings), selector)
+    retrieval = retrieval_service(settings, unit_of_work, embeddings)
+    return AnswerService(
+        retrieval, llm(settings), evidence_selector(settings), today=lambda: local_today(settings)
+    )
+
+
+def task_service(settings: Settings, unit_of_work: Callable[[], UnitOfWork]) -> TaskService:
+    return TaskService(unit_of_work, timezone=settings.timezone)
+
+
+def task_proposal_service(
+    settings: Settings,
+    unit_of_work: Callable[[], UnitOfWork],
+    retrieval: RetrievalService | None = None,
+    model: LLMProvider | None = None,
+) -> TaskProposalService:
+    return TaskProposalService(
+        unit_of_work,
+        retrieval or retrieval_service(settings, unit_of_work),
+        model or llm(settings),
+        evidence_selector(settings),
+        today=lambda: local_today(settings),
+    )
+
+
+def chat_service(settings: Settings, unit_of_work: Callable[[], UnitOfWork]) -> ChatService:
+    """Answers and task proposals sharing one embedding model and one LLM client."""
+    embeddings = embedder(settings)
+    model = llm(settings)
+    retrieval = retrieval_service(settings, unit_of_work, embeddings)
+    selector = evidence_selector(settings)
+    return ChatService(
+        unit_of_work,
+        AnswerService(retrieval, model, selector, today=lambda: local_today(settings)),
+        TaskProposalService(
+            unit_of_work, retrieval, model, selector, today=lambda: local_today(settings)
+        ),
+    )
+
+
+def local_today(settings: Settings) -> date:
+    return datetime.now(ZoneInfo(settings.timezone)).date()

@@ -37,6 +37,9 @@ class Settings(BaseSettings):
     # graph linked them to the question). Unrelated text scores about 0.40 with bge.
     answer_min_similarity: float = Field(default=0.5, ge=0, le=1)
 
+    # Time zone used to read and store task due dates (a due date means end of that day here).
+    timezone: str = "Asia/Kolkata"
+
 
 @lru_cache
 def get_settings() -> Settings:

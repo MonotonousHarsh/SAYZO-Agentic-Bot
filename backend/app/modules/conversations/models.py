@@ -5,6 +5,8 @@ from dataclasses import dataclass
 from datetime import datetime
 from uuid import UUID
 
+from app.modules.tasks import TaskProposal
+
 
 class ConversationNotFound(Exception):
     """No such conversation for this member (deliberately the same error when it exists but
@@ -36,3 +38,4 @@ class ChatTurn:
     conversation_id: UUID
     reply: StoredMessage
     replayed: bool = False  # True when a retried request returned the original reply
+    proposal: TaskProposal | None = None  # set when the message asked for tasks

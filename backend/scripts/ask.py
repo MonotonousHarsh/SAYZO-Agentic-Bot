@@ -5,7 +5,8 @@ Usage (from the backend folder, after ingesting):
     python scripts/ask.py --as nex_rohan "What is the salary band for backend engineers?"
     python scripts/ask.py --as nex_meera --save "Who owns the API migration for Atlas?"
 
---save stores the question and answer as a conversation, as the chat API will.
+--save goes through the chat flow the API uses: it stores the exchange as a conversation,
+and a task request ("Create tasks for ...") gets a task proposal instead of an answer.
 """
 
 import argparse
@@ -14,7 +15,6 @@ import sys
 from app import bootstrap
 from app.config import get_settings
 from app.modules.answering import Answer
-from app.modules.conversations import ChatService
 from app.modules.identity import AccessDenied, AccessService
 from app.modules.identity.ids import organisation_id
 
@@ -33,7 +33,7 @@ def main() -> int:
 
     print(f"Asking as {access.full_name} ({access.role.value})\n")
     if args.save:
-        turn = ChatService(unit_of_work, answers).ask(access, args.question)
+        turn = bootstrap.chat_service(settings, unit_of_work).ask(access, args.question)
         reply = turn.reply
         print(f"[{reply.answer_status}] {reply.content}\n")
         for c in reply.citations:
