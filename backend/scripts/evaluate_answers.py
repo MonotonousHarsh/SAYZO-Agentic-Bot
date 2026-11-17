@@ -43,6 +43,7 @@ def main() -> int:
         if args.verbose or not score.passed:
             print(f"      answer: {' '.join(score.text.split())}")
             print(f"      cited:  {', '.join(score.cited) or 'nothing'}")
+            print(f"      shown:  {', '.join(score.shown) or 'nothing'}")
     print(f"\nPassed {card.passed}/{len(card.scores)}   Citation leaks: {card.leaks}")
     return 1 if card.leaks else 0
 

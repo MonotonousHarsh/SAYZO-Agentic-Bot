@@ -5,7 +5,7 @@ from datetime import datetime
 from enum import StrEnum
 from uuid import UUID
 
-from app.modules.retrieval import RetrievalResult
+from app.modules.retrieval import RetrievalResult, SearchHit
 
 
 class AnswerStatus(StrEnum):
@@ -38,3 +38,4 @@ class Answer:
     text: str
     citations: tuple[Citation, ...]
     retrieval: RetrievalResult | None = None
+    evidence: tuple[SearchHit, ...] = ()  # the chunks the model was shown

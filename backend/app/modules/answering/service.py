@@ -51,15 +51,15 @@ class AnswerService:
             checked = self._draft(result, sources)
         except LLMError as error:
             logger.warning("Answer generation failed: %s", error)
-            return Answer(AnswerStatus.FAILED, UNAVAILABLE, (), result)
+            return Answer(AnswerStatus.FAILED, UNAVAILABLE, (), result, tuple(sources))
         if checked is None:
-            return Answer(AnswerStatus.FAILED, UNGROUNDED, (), result)
+            return Answer(AnswerStatus.FAILED, UNGROUNDED, (), result, tuple(sources))
 
         citations = tuple(
             _citation(index, sources[original - 1])
             for index, original in enumerate(checked.used, start=1)
         )
-        return Answer(AnswerStatus(checked.status), checked.text, citations, result)
+        return Answer(AnswerStatus(checked.status), checked.text, citations, result, tuple(sources))
 
     def _draft(self, result: RetrievalResult, sources: Sequence[SearchHit]) -> CheckedAnswer | None:
         feedback: Sequence[str] = ()

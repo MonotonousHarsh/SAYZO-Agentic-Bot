@@ -31,6 +31,7 @@ class AnswerScore:
     status: AnswerStatus
     text: str
     cited: tuple[str, ...]
+    shown: tuple[str, ...]  # sources the model was given, with their similarity
     problems: tuple[str, ...]
 
     @property
@@ -76,6 +77,12 @@ class AnswerEvaluator:
                     status=answer.status,
                     text=answer.text,
                     cited=cited,
+                    shown=tuple(
+                        f"{h.external_id} ({h.similarity:.2f})"
+                        if h.similarity is not None
+                        else h.external_id
+                        for h in answer.evidence
+                    ),
                     problems=tuple(
                         _problems(question, expected, answer.status, answer.text, cited, index)
                     ),
