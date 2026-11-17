@@ -184,6 +184,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--accent); outline
 .segmented button.on { background: var(--ink); color: #fff; }
 .task-group h3 { font-size: 13px; color: var(--muted); font-weight: 600; margin: 18px 0 6px; }
 .task { padding: 10px 0; border-top: 1px solid var(--rule); }
+.task.fresh { background: var(--accent-soft); box-shadow: -8px 0 0 var(--accent-soft), 8px 0 0 var(--accent-soft); border-radius: 4px; }
 .task .t { font-weight: 600; }
 .task.COMPLETED .t, .task.CANCELLED .t { color: var(--muted); text-decoration: line-through; }
 .task .meta { font-size: 13px; color: var(--muted); }

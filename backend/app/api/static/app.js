@@ -373,7 +373,8 @@ function renderProposal(messageId, drafts) {
   const create = el("button", { class: "primary", type: "button", onclick: confirm });
   function updateButton() {
     if (rows.every((r) => r.done || !r.include.checked) && rows.some((r) => r.done)) {
-      create.replaceWith(el("p", { class: "proposal-note" }, "Done. The tasks are in the Tasks panel."));
+      create.replaceWith(el("p", { class: "proposal-note" }, "Done. ",
+        el("button", { class: "text", type: "button", onclick: () => showTasksPanel() }, "View tasks")));
       return;
     }
     const count = rows.filter((r) => !r.done && r.include.checked).length;
@@ -384,6 +385,7 @@ function renderProposal(messageId, drafts) {
 
   async function confirm() {
     create.disabled = true;
+    const created = [];
     for (const row of rows.filter((r) => !r.done && r.include.checked)) {
       try {
         const result = await api("/api/tasks", { method: "POST", body: JSON.stringify({
@@ -395,6 +397,7 @@ function renderProposal(messageId, drafts) {
           idempotency_key: `${messageId}:${row.index}`,
           conversation_id: state.conversationId, message_id: messageId }) });
         row.done = true;
+        created.push(result.task);
         row.outcome.className = "outcome";
         row.outcome.textContent = result.replayed ? "Already created" : "Created";
         row.node.classList.add("done");
@@ -405,7 +408,7 @@ function renderProposal(messageId, drafts) {
       }
     }
     updateButton();
-    loadTasks();
+    if (created.length) await revealTasks(created);
   }
 
   container.append(...rows.map((r) => r.node), el("div", { class: "proposal-actions" }, create));
@@ -414,20 +417,42 @@ function renderProposal(messageId, drafts) {
 
 // -- tasks panel ----------------------------------------------------------------------------
 
+function setMine(mine) {
+  state.mine = mine;
+  $("tasks-all").classList.toggle("on", !mine);
+  $("tasks-mine").classList.toggle("on", mine);
+  $("tasks-all").setAttribute("aria-pressed", String(!mine));
+  $("tasks-mine").setAttribute("aria-pressed", String(mine));
+  return loadTasks();
+}
 for (const [id, mine] of [["tasks-all", false], ["tasks-mine", true]]) {
-  $(id).addEventListener("click", () => {
-    state.mine = mine;
-    $("tasks-all").classList.toggle("on", !mine);
-    $("tasks-mine").classList.toggle("on", mine);
-    $("tasks-all").setAttribute("aria-pressed", String(!mine));
-    $("tasks-mine").setAttribute("aria-pressed", String(mine));
-    loadTasks();
-  });
+  $(id).addEventListener("click", () => setMine(mine));
 }
 
+// Below 1100px the Tasks panel is a drawer; on a wide screen it is always on show.
+const panelIsDrawer = () => window.matchMedia("(max-width: 1100px)").matches;
+function showTasksPanel() { if (panelIsDrawer()) toggleDrawer("tasks", true); }
+
+// After tasks are created: make sure they are in the list the person is looking at, and
+// make the panel visible so the result is never hidden behind a closed drawer.
+async function revealTasks(created) {
+  state.fresh = new Set(created.map((t) => t.id));
+  const mine = (t) => t.assigned_to === state.me.member_id;
+  if (state.mine && !created.every(mine)) await setMine(false);  // "Mine" would hide them
+  else await loadTasks();
+  const label = created.length === 1 ? "Created 1 task" : `Created ${created.length} tasks`;
+  toast(label);
+  showTasksPanel();
+  document.querySelector(".task.fresh")?.scrollIntoView({ block: "nearest" });
+  setTimeout(() => { state.fresh = null; document.querySelectorAll(".task.fresh").forEach((n) => n.classList.remove("fresh")); }, 8000);
+}
+
+let loadSeq = 0;
 async function loadTasks() {
+  const seq = ++loadSeq;  // a slower, older response must never overwrite a newer one
   try {
     const tasks = await api(`/api/tasks?mine=${state.mine}`);
+    if (seq !== loadSeq) return;
     if (!tasks.length) {
       $("task-groups").replaceChildren(el("p", { class: "empty" }, state.mine
         ? "Nothing is assigned to you."
@@ -453,7 +478,7 @@ function renderTask(task) {
     } catch (error) { toast(error.message, true); }
     loadTasks();
   } }, STATUSES.map(([value, label]) => el("option", { value, selected: value === task.status }, label)));
-  return el("li", { class: `task ${task.status}` },
+  return el("li", { class: `task ${task.status}${state.fresh?.has(task.id) ? " fresh" : ""}` },
     el("div", { class: "t" }, task.title),
     el("div", { class: "meta" },
       task.assigned_to_name || "Unassigned", " · ",
