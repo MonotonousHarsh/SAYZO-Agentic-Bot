@@ -5,8 +5,6 @@ organisation's known people and projects, relationship types are checked against
 subject/object types, and low-confidence or malformed proposals are rejected with a reason.
 """
 
-import re
-import unicodedata
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from uuid import UUID
@@ -18,15 +16,7 @@ from app.modules.ingestion.graph.schemas import (
     ExtractedRelationship,
     RelationshipType,
 )
-
-_NON_WORD = re.compile(r"[^\w\s-]")
-_SPACES = re.compile(r"\s+")
-
-
-def normalise_name(name: str) -> str:
-    text = unicodedata.normalize("NFKC", name).casefold()
-    text = _NON_WORD.sub(" ", text)
-    return _SPACES.sub(" ", text).strip()
+from app.shared.text import normalise_name
 
 
 @dataclass(frozen=True)
