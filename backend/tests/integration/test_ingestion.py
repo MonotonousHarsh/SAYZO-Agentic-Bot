@@ -233,3 +233,15 @@ def test_failing_graph_extraction_still_indexes_the_source(
 
     assert not report.failures and report.graph_failures > 0
     assert scalar(seeded, "SELECT count(DISTINCT source_id) FROM knowledge_chunks") == 17
+
+
+def test_reindex_rebuilds_unchanged_sources(seeded: Engine, seed_dataset: SyntheticDataset) -> None:
+    service = make_service(seeded)
+    service.ingest(seed_dataset.documents)
+
+    report = service.ingest(seed_dataset.documents, reindex=True)
+
+    assert not report.failures and report.unchanged == 0 and report.chunks_written >= 17
+    assert scalar(seeded, "SELECT count(DISTINCT source_id) FROM knowledge_chunks") == 17
+    duplicate = source_row(seeded, document(seed_dataset, "nex_mtg_002"))
+    assert duplicate.duplicate_of_source_id is not None and duplicate.chunk_count == 0

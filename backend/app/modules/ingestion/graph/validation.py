@@ -5,6 +5,7 @@ organisation's known people and projects, relationship types are checked against
 subject/object types, and low-confidence or malformed proposals are rejected with a reason.
 """
 
+import re
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from uuid import UUID
@@ -17,6 +18,15 @@ from app.modules.ingestion.graph.schemas import (
     RelationshipType,
 )
 from app.shared.text import normalise_name
+
+_ASIDE = re.compile(r"\s*[(\[][^)\]]*[)\]]")
+
+
+def strip_asides(name: str) -> str:
+    """Drop bracketed descriptions models add to names:
+    "API migration (v1 REST endpoints to the v2 gateway)" -> "API migration"."""
+    stripped = " ".join(_ASIDE.sub("", name).split())
+    return stripped or " ".join(name.split())
 
 
 @dataclass(frozen=True)
@@ -79,7 +89,7 @@ class GraphValidator:
             if resolved is None:
                 result.rejected.append(f"entity with empty name: {entity.name!r}")
                 continue
-            by_name[normalise_name(entity.name)] = resolved
+            by_name[normalise_name(strip_asides(entity.name))] = resolved
             if resolved.key not in {e.key for e in result.entities}:
                 result.entities.append(resolved)
 
@@ -102,6 +112,7 @@ class GraphValidator:
         return result
 
     def _resolve(self, name: str, entity_type: EntityType) -> ResolvedEntity | None:
+        name = strip_asides(name)
         normalised = normalise_name(name)
         if not normalised:
             return None
@@ -121,7 +132,7 @@ class GraphValidator:
 
         "Atlas" in a relationship matches a listed "Project Atlas"; "Rohan" matches "Rohan Verma".
         """
-        direct = by_name.get(normalise_name(name))
+        direct = by_name.get(normalise_name(strip_asides(name)))
         if direct is not None:
             return direct
         resolved = self._resolve(name, EntityType.TASK)

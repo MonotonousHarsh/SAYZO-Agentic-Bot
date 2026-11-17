@@ -5,6 +5,7 @@ Usage (from the backend folder, after `alembic upgrade head`):
     python scripts/ingest_dataset.py --dataset ../datasets/generated/sayzo_generated_v1
     python scripts/ingest_dataset.py --as-of 2026-11-10T12:00:00+05:30 # state as of that moment
     python scripts/ingest_dataset.py --no-graph                        # skip LLM graph extraction
+    python scripts/ingest_dataset.py --reindex                         # rebuild chunks and graph
 
 Re-running is safe: unchanged sources are skipped, edited ones re-indexed, deleted ones removed.
 `--as-of` replays the sources as they were at an earlier moment, which makes a good demo:
@@ -77,7 +78,7 @@ def main() -> int:
     service = IngestionService(
         lambda: UnitOfWork(engine), embedder, graph_extractor=graph_extractor
     )
-    report = service.ingest(documents)
+    report = service.ingest(documents, reindex=args.reindex)
     print_report(report)
     return 1 if report.failures else 0
 
@@ -115,6 +116,11 @@ def parse_args() -> argparse.Namespace:
         help="only use snapshots at or before this ISO time (with a timezone)",
     )
     parser.add_argument("--no-graph", action="store_true", help="skip LLM graph extraction")
+    parser.add_argument(
+        "--reindex",
+        action="store_true",
+        help="re-chunk, re-embed and re-extract unchanged sources too (after a model change)",
+    )
     args = parser.parse_args()
     if args.as_of is not None and args.as_of.tzinfo is None:
         parser.error("--as-of needs a timezone, e.g. 2026-11-10T12:00:00+05:30")

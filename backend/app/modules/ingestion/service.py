@@ -92,12 +92,16 @@ class IngestionService:
         self._graph_extractor = graph_extractor
         self._known_names: dict[UUID, KnownNames] = {}
 
-    def ingest(self, documents: Sequence[SourceDocument]) -> IngestionReport:
+    def ingest(
+        self, documents: Sequence[SourceDocument], *, reindex: bool = False
+    ) -> IngestionReport:
+        """Bring the database in line with `documents`. With `reindex`, unchanged sources are
+        re-chunked, re-embedded and re-extracted too (after a model or prompt change)."""
         report = IngestionReport()
         snapshots, report.collapsed_snapshots = latest_snapshots(documents)
         for document in snapshots:
             try:
-                self._ingest_one(document, report)
+                self._ingest_one(document, report, reindex)
             except Exception as error:  # one bad source must not stop the run
                 logger.exception("Failed to ingest %s", document.external_id)
                 report.failures.append(f"{document.external_id}: {error}")
@@ -106,11 +110,13 @@ class IngestionService:
 
     # -- per-source handling -------------------------------------------------------------------
 
-    def _ingest_one(self, document: SourceDocument, report: IngestionReport) -> None:
+    def _ingest_one(self, document: SourceDocument, report: IngestionReport, reindex: bool) -> None:
         record = self._to_record(document)
         with self._unit_of_work() as uow:
             stored = KnowledgeRepository(uow.connection).stored_source(record.id)
         action = decide(stored, document)
+        if reindex and action is Action.UNCHANGED and not document.is_deleted:
+            action = Action.UPDATE
 
         if action is Action.IGNORE:
             report.ignored += 1

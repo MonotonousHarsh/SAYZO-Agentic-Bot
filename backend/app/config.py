@@ -33,6 +33,10 @@ class Settings(BaseSettings):
     embedding_dimension: int = 768
     embedding_device: str = "cpu"
 
+    # Answering: chunks below this cosine similarity are not shown to the model (unless the
+    # graph linked them to the question). Unrelated text scores about 0.40 with bge.
+    answer_min_similarity: float = Field(default=0.5, ge=0, le=1)
+
 
 @lru_cache
 def get_settings() -> Settings:

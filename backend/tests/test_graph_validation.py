@@ -82,3 +82,16 @@ def test_low_confidence_and_self_relationships_are_rejected() -> None:
     assert not result.relationships
     assert "too low" in result.rejected[0]
     assert "itself" in result.rejected[1]
+
+
+def test_bracketed_descriptions_are_dropped_from_names() -> None:
+    result = validate(
+        [
+            entity("API migration (v1 REST endpoints to the v2 gateway)", EntityType.TASK),
+            entity("Project Atlas", EntityType.PROJECT),
+        ],
+        [relation("API migration", RelationshipType.PART_OF, "Atlas")],
+    )
+
+    assert [e.canonical_name for e in result.entities] == ["API migration", "Project Atlas"]
+    assert len(result.relationships) == 1 and not result.rejected
